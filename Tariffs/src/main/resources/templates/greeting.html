@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вторая</title>
+</head>
+<body>
+    Вторая
+    <table>
+        <tr>
+            <th>Logins</th>
+        </tr>
+
+        <tr th:each="log : ${listLogins}">
+            <td th:text="${log}"></td>
+        </tr>
+    </table>
+    <form action="third">
+        <button type="submit">
+            Переход
+        </button>
+    </form>
+</body>
+</html>
+
