@@ -15,21 +15,33 @@ public class User {
 
     private String password;
 
-    @ManyToMany
-    private Set<Role> roles = new java.util.LinkedHashSet<>();
+    @OneToOne()
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, Role role) {
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
+
 
     public User(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
+    }
+
+    public User(Long id, String username, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -54,14 +66,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
     }
 
     @Override

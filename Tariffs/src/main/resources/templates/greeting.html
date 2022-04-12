@@ -2,17 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Вторая</title>
+    <title>Список пользователей</title>
 </head>
 <body>
-    Вторая
+    Список пользователей
     <table>
         <tr>
-            <th>Logins</th>
+            <th>Пользователи</th>
         </tr>
 
-        <tr th:each="log : ${listLogins}">
-            <td th:text="${log}"></td>
+        <tr th:each="user : ${users}">
+            <td th:text="${user}"></td>
         </tr>
     </table>
     <form action="third">

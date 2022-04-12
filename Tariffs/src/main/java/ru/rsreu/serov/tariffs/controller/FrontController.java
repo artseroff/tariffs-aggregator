@@ -1,16 +1,26 @@
 package ru.rsreu.serov.tariffs.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.rsreu.serov.tariffs.entity.User;
+import ru.rsreu.serov.tariffs.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class FrontController {
+
+    @Autowired
+    UserRepository userRepository;
+
 
     List<String> listLogins = new ArrayList<>();
 
@@ -42,24 +52,45 @@ public class FrontController {
         }
     }*/
 
-    @RequestMapping("/addLogin")
-    public String addLogin(@RequestParam(value="login", required=false, defaultValue="login") String login, HttpServletRequest request) {
-        listLogins.add(login);
-        return "redirect:/greeting";
+    @RequestMapping("/admin/users")
+    public String showUsers(Model model, HttpServletRequest request) {
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+
+        return "/admin/users";
     }
 
-    @RequestMapping("/greeting")
-    public String toGreeting(Model model, HttpServletRequest request) {
-        String s1 = request.getRequestURI();
-        model.addAttribute("listLogins", listLogins);
 
-        return "/greeting";
+    @GetMapping("/login")
+    public String showLogin(Model model) {
+
+        return "login";
     }
 
-    @RequestMapping("/third")
-    public String toThird( String name, Model model, HttpServletRequest  request) {
+    @PostMapping("/login")
+    public String login(Model model, @RequestParam(value="username") String username, @RequestParam(value="password") String password,
+                        HttpServletRequest request) {
+        String page;
+        User foundUser = userRepository.getUserByUsername(username);
 
-        return "third";
+        if (foundUser.getPassword().equals(password)) {
+            /*Если не авторизован
+            if () {
+
+
+            }
+            Иначе редирект на юзерс
+            */
+
+            page = "redirect:/admin/users";
+            HttpSession session = request.getSession();
+            session.setAttribute("user", foundUser);
+        } else {
+            model.addAttribute("errorLogin", "Неверный логин или пароль!");
+            page = "login";
+        }
+
+        return page;
     }
 
 }
