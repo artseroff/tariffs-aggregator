@@ -17,9 +17,15 @@
         <td th:text="${user}"></td>
     </tr>
 </table>
-<form action="third">
+
+<form th:action="@{/logout}" >
     <button type="submit">
-        Переход
+        Выйти
+    </button>
+</form>
+<form th:action="third" >
+    <button type="submit">
+        Третья
     </button>
 </form>
 </body>

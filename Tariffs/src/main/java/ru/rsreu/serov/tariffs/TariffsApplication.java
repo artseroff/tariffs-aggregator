@@ -6,9 +6,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import ru.rsreu.serov.tariffs.entity.Role;
 import ru.rsreu.serov.tariffs.entity.User;
+import ru.rsreu.serov.tariffs.filter.SecurityRedirectFilter;
+import ru.rsreu.serov.tariffs.listener.TimeoutSessionListener;
 import ru.rsreu.serov.tariffs.repository.*;
 
 import java.awt.*;
@@ -17,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @SpringBootApplication
+@ServletComponentScan//(basePackageClasses = {TimeoutSessionListener.class, SecurityRedirectFilter.class} )
 public class TariffsApplication {
 
     private static final Logger log = LoggerFactory.getLogger(TariffsApplication.class);
@@ -42,11 +46,10 @@ public class TariffsApplication {
     public CommandLineRunner demo(UserRepository repository, RoleRepository roleRepository) {
         return (args) -> {
             /*repository.deleteAll();
-            roleRepository.save(new Role(1l, "ROLE_USER"));
+            //roleRepository.save(new Role(1l, "ROLE_USER"));
             repository.save(new User("чел1", "чел1", roleRepository.getById(1l)));
-            repository.save(new User("чел2", "чел2", roleRepository.getById(1l)));
-*/
-            // fetch all customers
+            repository.save(new User("чел2", "чел2", roleRepository.getById(1l)));*/
+            // all customers
             log.info("User found with findAll():");
             log.info("-------------------------------");
             for (User user : repository.findAll()) {

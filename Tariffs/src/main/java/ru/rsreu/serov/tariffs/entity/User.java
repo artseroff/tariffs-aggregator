@@ -19,6 +19,7 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    private boolean isAuthorized;
 
     public User() {
     }
@@ -30,6 +31,13 @@ public class User {
         this.role = role;
     }
 
+    public User(Long id, String username, String password, Role role, boolean isAuthorized) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.isAuthorized = isAuthorized;
+    }
 
     public User(Long id, String username, String password) {
         this.id = id;
@@ -66,6 +74,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    public boolean isAuthorized() {
+        return isAuthorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        isAuthorized = authorized;
     }
 
     @Override

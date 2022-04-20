@@ -21,7 +21,6 @@ public class FrontController {
     @Autowired
     UserRepository userRepository;
 
-
     List<String> listLogins = new ArrayList<>();
 
     @RequestMapping("/")
@@ -52,6 +51,43 @@ public class FrontController {
         }
     }*/
 
+    @GetMapping("/login")
+    public String showLogin(Model model) {
+        model.addAttribute("1", "1");
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(Model model, @RequestParam(value="username") String username, @RequestParam(value="password") String password,
+                        HttpServletRequest request) {
+        String page = "";
+        User foundUser = userRepository.getUserByUsername(username);
+
+        if (foundUser != null && foundUser.getPassword().equals(password)) {
+            //Если не авторизован
+            if (!foundUser.isAuthorized()) {
+
+                //изменить статус на авторизован
+                userRepository.updateUserAuthorizationStatus(foundUser.getId(), true);
+
+                boolean b = request.getSession(false) == null;
+                HttpSession session = request.getSession();
+                b = session.getAttribute("user") == null;
+                session.setAttribute("user", foundUser);
+
+                page = "redirect:/admin/users";
+            } else {
+                model.addAttribute("errorText", "Вы уже авторизованы!");
+                page = "/login";
+            }
+        } else {
+            model.addAttribute("errorText", "Неверный логин или пароль!");
+            page = "/login";
+        }
+
+        return page;
+    }
+
     @RequestMapping("/admin/users")
     public String showUsers(Model model, HttpServletRequest request) {
         List<User> users = userRepository.findAll();
@@ -60,37 +96,11 @@ public class FrontController {
         return "/admin/users";
     }
 
-
-    @GetMapping("/login")
-    public String showLogin(Model model) {
-
-        return "login";
+    @RequestMapping("/logout")
+    public String logout(Model model, HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "/index";
     }
 
-    @PostMapping("/login")
-    public String login(Model model, @RequestParam(value="username") String username, @RequestParam(value="password") String password,
-                        HttpServletRequest request) {
-        String page;
-        User foundUser = userRepository.getUserByUsername(username);
-
-        if (foundUser.getPassword().equals(password)) {
-            /*Если не авторизован
-            if () {
-
-
-            }
-            Иначе редирект на юзерс
-            */
-
-            page = "redirect:/admin/users";
-            HttpSession session = request.getSession();
-            session.setAttribute("user", foundUser);
-        } else {
-            model.addAttribute("errorLogin", "Неверный логин или пароль!");
-            page = "login";
-        }
-
-        return page;
-    }
 
 }

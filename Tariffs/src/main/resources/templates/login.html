@@ -10,8 +10,8 @@
     </style>
     <script>
         function clearErrorMessages() {
-            document.getElementById('errorLogin').textContent = '';
-            document.getElementById('errorAlreadyAuthorized').textContent = '';
+            document.getElementById('errorLogin').textContent = "";
+            document.getElementById('errorAlreadyAuthorized').textContent = "";
         }
     </script>
 </head>
@@ -27,8 +27,7 @@
         <br>
         <input name="password" type="password" placeholder="Пароль" oninput="clearErrorMessages()"/>
         <br>
-        <p id="errorLogin" th:text="${errorLogin}"></p>
-        <p id="errorAlreadyAuthorized" th:text="${errorAlreadyAutorized}"></p>
+        <p id="errorLogin" th:text="${errorText}"></p>
         <button type="submit">Войти</button>
     </form>
 </div>
