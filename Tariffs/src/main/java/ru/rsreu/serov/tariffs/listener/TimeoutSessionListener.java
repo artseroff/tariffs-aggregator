@@ -11,15 +11,8 @@ import javax.servlet.http.HttpSessionListener;
 @Component
 public class TimeoutSessionListener implements HttpSessionListener {
 
-
     @Autowired
     UserRepository userRepository;
-
-    @Override
-    public void sessionCreated(HttpSessionEvent se) {
-
-        System.out.println("Сессия создана");
-    }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {

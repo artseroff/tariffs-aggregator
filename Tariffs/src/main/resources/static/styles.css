@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+}
+.headerBlock {
+    background: #2196f3;
+    padding: 10px;
+    margin: 0;
+    color: #FFFFFF;
+    height: 45px;
+    font-size: 18px;
+    valign: centered;
+}

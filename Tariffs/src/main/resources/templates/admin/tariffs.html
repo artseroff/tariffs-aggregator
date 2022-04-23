@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<main>
+    <h3>Список пользователей</h3>
+    <table>
+        <tr>
+            <th></th>
+            <th>Логин</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+            <th>ФИО</th>
+            <th>Статус авторизации</th>
+        </tr>
+        <tr th:each="elem, state : ${users}">
+            <td th:text="${state.count}"></td>
+            <td th:text="${elem.login}"></td>
+            <td th:text="${elem.password}"></td>
+            <td th:text="${elem.name}"></td>
+            <td th:text="${elem.role.name}"></td>
+            <td th:text="${elem.isAuthorized}"></td>
+
+        </tr>
+       <!-- <c:forEach var="elem" items="${listUsers}" varStatus="status">
+            <c:if test="${user.id!=elem.id}">
+                <tr>
+                    <td>< value="${ status.count }" /></td>
+
+                        <td class="tableButton">
+                            <form method="POST" action="/01-08-Serov-Torzhkova-2021-12-15/controller">
+                                <input type="hidden" name="id" value="${elem.id}"/>
+                                <button type="submit" class="iconButton">
+                                    &lt;!&ndash;<img src="${pageContext.request.contextPath}/resources/icons/lock.png"
+                                         width="20" height="20" border="0" title="Заблокировать" data-toggle="tooltip" class="form-control tooltip-demo">
+&ndash;&gt;
+                                </button>
+                            </form>
+                        </td>
+
+                </tr>
+            </c:if>
+        </c:forEach>-->
+    </table>
+</main>
+</body>
+</html>

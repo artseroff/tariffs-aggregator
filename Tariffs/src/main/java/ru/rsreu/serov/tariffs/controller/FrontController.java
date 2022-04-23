@@ -53,7 +53,6 @@ public class FrontController {
 
     @GetMapping("/login")
     public String showLogin(Model model) {
-        model.addAttribute("1", "1");
         return "login";
     }
 
@@ -61,7 +60,7 @@ public class FrontController {
     public String login(Model model, @RequestParam(value="username") String username, @RequestParam(value="password") String password,
                         HttpServletRequest request) {
         String page = "";
-        User foundUser = userRepository.getUserByUsername(username);
+        User foundUser = userRepository.getUserByLogin(username);
 
         if (foundUser != null && foundUser.getPassword().equals(password)) {
             //Если не авторизован
@@ -93,7 +92,7 @@ public class FrontController {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
 
-        return "/admin/users";
+        return "/admin/tariffs";
     }
 
     @RequestMapping("/logout")
@@ -102,5 +101,10 @@ public class FrontController {
         return "/index";
     }
 
+    @RequestMapping("/third")
+    public String goThird() {
+
+        return "third";
+    }
 
 }

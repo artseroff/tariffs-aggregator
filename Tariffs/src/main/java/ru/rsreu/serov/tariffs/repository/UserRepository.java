@@ -3,6 +3,7 @@ package ru.rsreu.serov.tariffs.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rsreu.serov.tariffs.entity.User;
 
@@ -14,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
     void deleteAll();
     User findById(long id);
-    User getUserByUsername(String username);
+    User getUserByLogin(String login);
 
     // @Query(value="UPDATE users SET is_authorized = ?2 where id=?1", nativeQuery = true)
 

@@ -2,7 +2,6 @@ package ru.rsreu.serov.tariffs.entity;
 
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -11,44 +10,59 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(unique = true, nullable = false)
+    private String login;
 
     private String password;
+
+    private String name;
 
     @OneToOne()
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @Column(nullable = false)
     private boolean isAuthorized;
+
+    public boolean getIsAuthorized() {
+        return isAuthorized;
+    }
+
 
     public User() {
     }
 
-    public User(String username, String password, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
+    public User(String login, String password, String name, Role role, boolean isAuthorized) {
 
-    public User(Long id, String username, String password, Role role, boolean isAuthorized) {
-        this.id = id;
-        this.username = username;
+        this.login = login;
         this.password = password;
+        this.name = name;
         this.role = role;
         this.isAuthorized = isAuthorized;
     }
 
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
+    public User(String login, String password, String name, Role role) {
+
+        this.login = login;
         this.password = password;
+        this.name = name;
+        this.role = role;
     }
 
-    public User(Long id, String username, String password, Role role) {
+    public User(Long id, String login, String password, String name, Role role, boolean isAuthorized) {
         this.id = id;
-        this.username = username;
+        this.login = login;
         this.password = password;
+        this.name = name;
+        this.role = role;
+        this.isAuthorized = isAuthorized;
+    }
+
+    public User(Long id, String login, String password, String name, Role role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.name = name;
         this.role = role;
     }
 
@@ -60,12 +74,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String username) {
+        this.login = username;
     }
 
     public String getPassword() {
@@ -76,6 +90,21 @@ public class User {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public boolean isAuthorized() {
         return isAuthorized;
@@ -89,7 +118,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

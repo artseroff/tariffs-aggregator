@@ -46,9 +46,9 @@ public class TariffsApplication {
     public CommandLineRunner demo(UserRepository repository, RoleRepository roleRepository) {
         return (args) -> {
             /*repository.deleteAll();
-            //roleRepository.save(new Role(1l, "ROLE_USER"));
-            repository.save(new User("чел1", "чел1", roleRepository.getById(1l)));
-            repository.save(new User("чел2", "чел2", roleRepository.getById(1l)));*/
+            roleRepository.save(new Role(1l, "ROLE_USER"));
+            repository.save(new User("чел1", "чел1", "ЧЕЛ1", roleRepository.getById(1l)));
+            repository.save(new User("чел2", "чел2", "ЧЕЛ2", roleRepository.getById(1l)));*/
             // all customers
             log.info("User found with findAll():");
             log.info("-------------------------------");
