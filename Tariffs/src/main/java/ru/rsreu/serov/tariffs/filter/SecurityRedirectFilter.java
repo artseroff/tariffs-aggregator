@@ -29,7 +29,6 @@ public class SecurityRedirectFilter implements Filter {
         } else {
             User user = (User) session.getAttribute("user");
             if (user == null) {
-
                     httpResponse.sendRedirect(String.format("%s%s", httpRequest.getContextPath(), indexPath));
                     return;
             }

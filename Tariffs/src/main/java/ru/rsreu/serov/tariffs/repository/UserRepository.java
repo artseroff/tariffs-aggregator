@@ -13,9 +13,11 @@ import java.util.List;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
+    List<User> findUsersByLogin(String login);
     void deleteAll();
     User findById(long id);
     User getUserByLogin(String login);
+
 
     // @Query(value="UPDATE users SET is_authorized = ?2 where id=?1", nativeQuery = true)
 

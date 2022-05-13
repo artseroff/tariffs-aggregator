@@ -1,12 +1,136 @@
+html {
+    font-size: 20px;
+}
 body {
     margin: 0;
+    background-color: #ffefd5;
 }
-.headerBlock {
-    background: #2196f3;
-    padding: 10px;
-    margin: 0;
+
+main {
+    display: grid;
+    justify-items: center;
+}
+
+textarea {
+    font-family: Arial;
+    font-size: 0.875rem;
+}
+
+
+.fullnameTextarea {
+    width: 215px;
+    min-height: 30px;
+    max-height: 80px;
+    resize: vertical;
+}
+
+.error {
+    color:red;
+}
+
+table {
+    text-align: center;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border-collapse: collapse;
+}
+
+#tariffs {
+    outline: 3px solid #ffd300;
+    background-color: #fffff0;
+    font-size: 1rem;
+}
+
+#tariffs th {
+    background-color: #ffd300;
+    color: #fff;
+    font-weight:lighter;
+}
+
+#tariffs th, td{
+    padding: 10px 5px;
+}
+
+tbody tr:nth-child(even){
+    background-color: #e7e7e7;
+}
+
+input {
+    font-size: 0.875rem;
+}
+
+button {
+    background-color: #fff7ec;
+    font-size: 0.875rem;
+    border: gray 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+select {
+    width: 222px;
+    font-size: 0.875rem;
+}
+
+.singleForm {
+    padding: 20px;
+}
+
+.gridCenteredForm {
+    display: grid;
+    justify-items: center;
+    row-gap: 10px;
+}
+
+.linkButton {
+    border: #FFFFFF;
+    background: none;
+    cursor: pointer;
     color: #FFFFFF;
-    height: 45px;
-    font-size: 18px;
-    valign: centered;
+    padding: 5px 10px;
+}
+
+
+.linkButton:hover {
+    text-decoration: underline;
+    border-radius: 5px;
+    background-color: #FFAA00;
+}
+
+.linkButton:active {
+    background: antiquewhite;
+    color: black;
+}
+
+.headerBlock {
+    display: grid;
+    background: #FFBF40;
+    padding: 5px 10px;
+    margin: 0;
+    border-radius: 7px;
+    color: #FFFFFF;
+    height: auto;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    justify-items: center;
+}
+
+.menuBlock {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 15px;
+}
+
+.logoutBlock {
+    padding: 5px;
+    display: grid;
+    grid-row-gap: 5px;
+    justify-items: right;
+}
+
+h3 {
+    text-align: center;
 }

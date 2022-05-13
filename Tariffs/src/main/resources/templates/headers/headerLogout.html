@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header" class="headerBlock">
+    <div></div>
+    <div></div>
+    <div th:fragment="logout"  class="logoutBlock">
+        <label th:text="|Вы, ${session?.user?.name} (${session?.user?.role?.name})|"></label>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="linkButton">
+                Выйти
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

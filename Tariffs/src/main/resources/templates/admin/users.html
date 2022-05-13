@@ -1,38 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/styles.css}" rel="stylesheet">
     <title>Список пользователей</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
-
 <body>
-<div  th:replace="header :: header">
+<div th:replace="headers/headerLogoutAndMenu :: header">
 </div>
+<main>
+    <h3>Список пользователей</h3>
+    <form th:action="@{/admin/showAddUserPage}" method="post">
+        <button type="submit">Добавить пользователя</button>
+    </form>
+    <table id="tariffs">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th>ФИО</th>
+                <th>Роль</th>
+                <th>Статус авторизации</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
 
-Список пользователей
-<p th:text="|Вы, ${session?.user?.login}|"></p>
-<table>
+        <tbody>
+        <tr th:each="elem, state : ${users}">
+            <td th:text="${state.count}"></td>
+            <td th:text="${elem.login}"></td>
+            <td th:text="${elem.password}"></td>
+            <td th:text="${elem.name}"></td>
+            <td th:text="${elem.role.name}"></td>
+            <td th:text="${elem.isAuthorized}"></td>
+            <td>
+                <form action="showEditUserPage" method="post">
+                    <input type="hidden" name="userId" th:value="${elem.id}"/>
+                    <button type="submit" th:if="${!elem.isAuthorized}"> Редактировать </button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/admin/deleteUser}" method="post">
+                    <input type="hidden" name="userId" th:value="${elem.id}"/>
+                    <input type="submit" th:if="${!elem.isAuthorized}" value="Удалить" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
 
-    <tr>
-        <th>Пользователи</th>
-    </tr>
-
-    <tr th:each="elem : ${users}">
-        <td th:text="${elem}"></td>
-    </tr>
-</table>
-
-<form th:action="@{/logout}" >
-    <button type="submit">
-        Выйти
-    </button>
-</form>
-<form th:action="@{/third}" >
-    <button type="submit">
-        Третья
-    </button>
-</form>
+    </table>
+</main>
 </body>
 </html>
-

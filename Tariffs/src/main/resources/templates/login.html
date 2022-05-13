@@ -3,34 +3,30 @@
 <head>
     <meta charset="utf-8">
     <title>Авторизация</title>
-    <style>
-       p {
-           color:red;
-       }
-    </style>
+    <link th:href="@{/styles.css}" rel="stylesheet">
     <script>
         function clearErrorMessages() {
-            document.getElementById('errorLogin').textContent = "";
-            document.getElementById('errorAlreadyAuthorized').textContent = "";
+            document.getElementById('errorText').textContent = "";
         }
     </script>
 </head>
-
 <body>
 
-<div>
-    <h2>Вход в систему</h2>
-    <form method="POST" action="login">
+<main>
 
-        <input name="username" type="text" placeholder="Логин"
+    <form method="POST" action="login" id="singleForm">
+        <h2>Вход в систему</h2>
+        Логин
+        <br>
+        <input name="username" type="text"
                autofocus="true" oninput="clearErrorMessages()"/>
-        <br>
-        <input name="password" type="password" placeholder="Пароль" oninput="clearErrorMessages()"/>
-        <br>
-        <p id="errorLogin" th:text="${errorText}"></p>
+        <p>
+        Пароль<br>
+        <input name="password" type="password" oninput="clearErrorMessages()"/></p>
+        <p id="errorText" class="error" th:text="${errorText}" ></p>
         <button type="submit">Войти</button>
     </form>
-</div>
+</main>
 
 </body>
 </html>

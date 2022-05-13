@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление пользователя</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+    <script>
+        function setRoleName() {
+            let select = document.getElementById("role.id");
+            let nameInput = document.getElementById("role.name");
+            nameInput.value = select.selectedOptions[0].text;
+        }
+    </script>
+</head>
+<body>
+<div th:replace="headers/headerLogoutAndBack :: header">
+</div>
+<main>
+    <h3>Добавление пользователя</h3>
+
+    <form onsubmit="setRoleName()" th:action="@{/admin/addUser}" th:object="${user}" method="post" class="gridCenteredForm">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:value="*{login}" name="oldLogin">
+        <div>
+            Логин
+            <br>
+            <input type="text" th:field="*{login}" maxlength="15" required/>
+        </div>
+        <div th:errors="*{login}" class="error"></div>
+        <div class="error" th:text="${errorUniqueLoginText}"></div>
+        <div>
+            Пароль<br>
+            <input type="text" th:field="*{password}" maxlength="15" required/>
+        </div>
+        <div th:errors="*{password}" class="error"></div>
+        <div>
+            <label>ФИО</label>
+            <br>
+            <textarea th:field="*{name}" maxlength="70" class="fullnameTextarea"></textarea>
+        </div>
+        <div th:errors="*{name}" class="error"></div>
+
+        <div>
+            Роль<br>
+            <input type="hidden" th:field="*{role.name}"/>
+            <select th:field="*{role.id}">
+                <option th:each="elem : ${roles}" th:text="${elem.name}" th:value="${elem.id}">
+            </select>
+        </div>
+        <input type="submit" value="Сохранить"/>
+    </form>
+</main>
+</body>
+</html>

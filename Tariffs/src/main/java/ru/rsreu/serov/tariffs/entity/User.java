@@ -2,32 +2,35 @@ package ru.rsreu.serov.tariffs.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank
+    @Size(max=15, message = "{valid.user.login.size}")
     private String login;
 
+    @NotBlank
+    @Size(max=15, message = "{valid.user.password.size}")
+    //@Pattern(regexp = "[^А-Яа-я ]*", message = "{valid.user.password.pattern}")
     private String password;
 
+    @NotBlank(message = "{valid.user.name}")
+    @Size(max=255, message = "{valid.user.name.size}")
     private String name;
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @Column(nullable = false)
     private boolean isAuthorized;
-
-    public boolean getIsAuthorized() {
-        return isAuthorized;
-    }
-
 
     public User() {
     }

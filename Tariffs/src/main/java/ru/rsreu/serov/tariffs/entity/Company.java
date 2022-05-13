@@ -1,11 +1,10 @@
 package ru.rsreu.serov.tariffs.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "companies")
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,24 +12,32 @@ public class Role {
     @Column(unique = true, nullable = false)
     private String name;
 
+    private String info;
+
     @Transient
-    @OneToOne(mappedBy = "role")
-    private User user;
+    @OneToOne(mappedBy = "company")
+    private Tariff tariff;
 
-    public Role() {
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
     }
 
-    public Role(Long id) {
-        this.id = id;
+    public Tariff getTariff() {
+        return tariff;
     }
 
-    public Role(Long id, String name) {
+    public Company(Long id, String name, String info) {
         this.id = id;
         this.name = name;
+        this.info = info;
     }
 
-    public Role(String name) {
+    public Company(String name, String info) {
         this.name = name;
+        this.info = info;
+    }
+
+    public Company() {
     }
 
     public Long getId() {
@@ -41,7 +48,6 @@ public class Role {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
@@ -50,12 +56,11 @@ public class Role {
         this.name = name;
     }
 
-
-    public User getUser() {
-        return user;
+    public String getInfo() {
+        return info;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setInfo(String info) {
+        this.info = info;
     }
 }
