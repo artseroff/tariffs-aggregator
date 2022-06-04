@@ -49,7 +49,7 @@ public class TariffsApplication {
             /*repository.deleteAll();
             roleRepository.save(new Role(RoleEnum.ADMINISTRATOR.getName()));
             repository.save(new User("чел1", "чел1", "ЧЕЛ1", roleRepository.getById(1l)));
-            repository.save(new User("чел2", "чел2", "ЧЕЛ2", roleRepository.getById(1l)));*/
+            repository.save(new User("чел2", "чел2", "ЧЕЛ2", roleRepository.getById(1l)));
             // all customers
             log.info("User found with findAll():");
             log.info("-------------------------------");
@@ -64,7 +64,7 @@ public class TariffsApplication {
             log.info("Customer found with findById(1L):");
             log.info("--------------------------------");
             log.info(user.toString());
-            log.info("");
+            log.info("");*/
         };
     }
 

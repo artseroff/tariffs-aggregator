@@ -36,4 +36,9 @@ class TariffsApplicationTests {
         assertEquals("а1", user.getLogin());
     }
 
+
+       /* System.out.println(userService.isNewLoginOfUserWithIdUnique("а1", 2));
+        System.out.println(userService.isNewLoginOfUserWithIdUnique("а1", 1));
+        System.out.println(userService.isNewLoginOfUserWithIdUnique("а", 2));*/
+
 }

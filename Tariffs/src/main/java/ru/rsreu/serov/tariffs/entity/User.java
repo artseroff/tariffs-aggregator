@@ -13,16 +13,16 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @NotBlank
+    @NotBlank(message = "{valid.user.login.empty}")
     @Size(max=15, message = "{valid.user.login.size}")
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "{valid.user.password.empty}")
     @Size(max=15, message = "{valid.user.password.size}")
-    //@Pattern(regexp = "[^А-Яа-я ]*", message = "{valid.user.password.pattern}")
+    //@Pattern(regexp = "[A-Za-z0-9]*", message = "{valid.user.password.pattern}")
     private String password;
 
-    @NotBlank(message = "{valid.user.name}")
+    @NotBlank(message = "{valid.user.name.empty}")
     @Size(max=255, message = "{valid.user.name.size}")
     private String name;
 
@@ -36,7 +36,6 @@ public class User {
     }
 
     public User(String login, String password, String name, Role role, boolean isAuthorized) {
-
         this.login = login;
         this.password = password;
         this.name = name;
@@ -45,7 +44,6 @@ public class User {
     }
 
     public User(String login, String password, String name, Role role) {
-
         this.login = login;
         this.password = password;
         this.name = name;
@@ -121,8 +119,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + login + '\'' +
+                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", isAuthorized=" + isAuthorized +
                 '}';
     }
 }
