@@ -6,14 +6,14 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="headers/headerLogoutAndMenu :: header">
+<div th:replace="headers/headerLogout :: header">
 </div>
 <main>
     <h3>Список пользователей</h3>
-    <form th:action="@{/admin/showAddUserPage}" method="post">
+    <form th:action="@{/admin/showAddUserPage}" method="post" class="gridCenteredForm">
         <button type="submit">Добавить пользователя</button>
     </form>
-    <table id="tariffs">
+    <table class="orangeGreyTable">
         <thead>
             <tr>
                 <th>№</th>
@@ -34,7 +34,7 @@
             <td th:text="${elem.password}"></td>
             <td th:text="${elem.name}"></td>
             <td th:text="${elem.role.name}"></td>
-            <td th:text="${elem.isAuthorized}"></td>
+            <td th:text="${elem.isAuthorized} ? 'Авторизован' : 'Не авторизован'"></td>
             <td>
                 <form action="showEditUserPage" method="post">
                     <input type="hidden" name="userId" th:value="${elem.id}"/>

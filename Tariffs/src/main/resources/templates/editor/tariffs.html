@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог тарифов</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="headers/headerLogoutAndMenu :: header">
+</div>
+<main>
+    <h3>Каталог тарифов</h3>
+    <form th:action="@{/editor/showTariffPage}" method="post" class="gridCenteredForm">
+        <button type="submit">Добавить тариф</button>
+    </form>
+    <table class="orangeGreyTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Компания</th>
+                <th>Количество минут</th>
+                <th>Количество смс</th>
+                <th>Пакет интернета</th>
+                <th class="narrowTh">Цена за минуту разговора (руб.)</th>
+                <th class="narrowTh">Цена за смс (руб.)</th>
+                <th class="narrowTh">Абонентская плата (руб.)</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="elem, state : ${tariffs}">
+            <th:block th:if="${elem.amount == 0}">
+                <td th:text="${state.count}"></td>
+                <td th:text="${elem.name}"></td>
+                <td th:text="${elem.company.name}"></td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td th:text="${elem.costPerMinute}"></td>
+                <td th:text="${elem.costPerMessage}"></td>
+                <td>-</td>
+            </th:block>
+            <th:block th:unless="${elem.amount == 0}">
+                <td th:text="${state.count}"></td>
+                <td th:text="${elem.name}"></td>
+                <td th:text="${elem.company.name}"></td>
+                <td th:text="${elem.countFreeMinutes}"></td>
+                <td th:text="${elem.countFreeMessages}"></td>
+                <td th:text="${elem.unlimitedTraffic} ? 'Безлимит' : ${elem.countGBInternetTraffic} + ' Гб'"></td>
+                <td th:text="${elem.costPerMinute}"></td>
+                <td th:text="${elem.costPerMessage}"></td>
+                <td th:text="${elem.amount}"></td>
+            </th:block>
+            <td>
+                <form action="showEditTariffPage" method="post">
+                    <input type="hidden" name="tariffId" th:value="${elem.id}"/>
+                    <input type="submit" value="Редактировать">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/editor/deleteTariff}" method="post">
+                    <input type="hidden" name="tariffId" th:value="${elem.id}"/>
+                    <input type="submit" value="Удалить" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</main>
+</body>
+</html>

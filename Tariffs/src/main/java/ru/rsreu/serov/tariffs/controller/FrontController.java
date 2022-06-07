@@ -92,7 +92,6 @@ public class FrontController {
         long id = Long.parseLong(request.getParameter("userId"));
         User user = userService.findById(id);
         model.addAttribute("user", user);
-        model.addAttribute("oldLogin", user.getLogin());
         return "/admin/editUserPage";
     }
 

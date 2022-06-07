@@ -8,25 +8,23 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="headers/headerLogoutAndBack :: header">
+<div th:replace="headers/headerLogout :: header">
 </div>
 <main>
     <h3>Редактирование пользователя</h3>
 
     <form th:action="@{/admin/editUser}" th:object="${user}" method="post" class="gridCenteredForm">
-<!--        <p>Id<br><input type="hidden" th:field="*{id}"/></p>-->
         <input type="hidden" th:field="*{id}"/>
-        <input type="hidden" th:value="*{login}" name="oldLogin">
         <div>
             Логин
             <br>
-            <input type="text" th:field="*{login}" maxlength="15" required/>
+            <input type="text" th:field="*{login}" maxlength="15"/>
         </div>
         <div th:errors="*{login}" class="error"></div>
         <div class="error" th:text="${errorUniqueLoginText}"></div>
         <div>
             Пароль<br>
-            <input type="text" th:field="*{password}" maxlength="15" required/>
+            <input type="text" th:field="*{password}" maxlength="15"/>
         </div>
         <div th:errors="*{password}" class="error"></div>
         <div>
@@ -40,11 +38,14 @@
             Роль<br>
             <input type="text" th:field="*{role.name}" readonly/>
         </div>
-        <!--        <p>Count per minutes <input type="number" th:field="*{costPerMinute}" /></p>-->
-        <!--        <div th:errors="*{costPerMinute}" class="error"/>-->
-        <!--        <p>countFreeMinutes <input type="text" th:field="*{countFreeMinutes}" /></p>-->
-        <!--        <div th:errors="*{countFreeMinutes}" class="error"/>-->
-        <input type="submit" value="Сохранить"/>
+
+        <div class="buttonRow">
+            <button type="submit">Сохранить</button>
+            <button type="submit" form="cancelForm">Отмена</button>
+        </div>
+
+    </form>
+    <form th:action="@{/admin}" id="cancelForm" method="post">
     </form>
 </main>
 </body>

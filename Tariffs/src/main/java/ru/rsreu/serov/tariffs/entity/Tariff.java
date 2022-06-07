@@ -1,10 +1,10 @@
 package ru.rsreu.serov.tariffs.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tariffs")
@@ -13,28 +13,30 @@ public class Tariff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "{valid.tariff.name.empty}")
     private String name;
 
+    @Min(message = "{valid.min.positive}", value = 0)
     private int countFreeMessages;
 
-    @Column(nullable = false)
-    @Min(message = "Число > 1", value = 1)
-    @Max(message = "Число минут должно быть от 1 до 200", value = 300)
+    /*@Column(nullable = false)*/
+    @Min(message = "{valid.min.positive}", value = 0)
     private int countFreeMinutes;
 
-    @Min(message = "Число > 1", value = 1)
-    @Max(message = "Число минут должно быть от 1 до 10", value = 5)
-    private float costPerMinute;
-
-    private float costPerMessage;
-
+    @Min(message = "{valid.min.positive}", value = 0)
     @Column(name = "count_gb_internet_traffic")
     private float countGBInternetTraffic;
 
-    private boolean isUnlimitedTraffic;
+    @Min(message = "{valid.min.positive}", value = 0)
+    private float costPerMinute;
 
+    @Min(message = "{valid.min.positive}", value = 0)
+    private float costPerMessage;
+
+    private boolean unlimitedTraffic;
+
+    @Min(message = "{valid.min.positive}", value = 0)
     private float amount;
 
     private String info;
@@ -48,10 +50,10 @@ public class Tariff {
                   String name,
                   int countFreeMessages,
                   int countFreeMinutes,
+                  int countGBInternetTraffic,
                   float costPerMinute,
                   float costPerMessage,
-                  float countGBInternetTraffic,
-                  boolean isUnlimitedTraffic,
+                  boolean unlimitedTraffic,
                   float amount,
                   String info,
                   Company company) {
@@ -62,7 +64,7 @@ public class Tariff {
         this.costPerMinute = costPerMinute;
         this.costPerMessage = costPerMessage;
         this.countGBInternetTraffic = countGBInternetTraffic;
-        this.isUnlimitedTraffic = isUnlimitedTraffic;
+        this.unlimitedTraffic = unlimitedTraffic;
         this.amount = amount;
         this.info = info;
         this.company = company;
@@ -72,10 +74,10 @@ public class Tariff {
     public Tariff(String name,
                   int countFreeMessages,
                   int countFreeMinutes,
+                  int countGBInternetTraffic,
                   float costPerMinute,
                   float costPerMessage,
-                  float countGBInternetTraffic,
-                  boolean isUnlimitedTraffic,
+                  boolean unlimitedTraffic,
                   float amount,
                   String info,
                   Company company) {
@@ -86,7 +88,7 @@ public class Tariff {
         this.costPerMinute = costPerMinute;
         this.costPerMessage = costPerMessage;
         this.countGBInternetTraffic = countGBInternetTraffic;
-        this.isUnlimitedTraffic = isUnlimitedTraffic;
+        this.unlimitedTraffic = unlimitedTraffic;
         this.amount = amount;
         this.info = info;
         this.company = company;
@@ -153,11 +155,11 @@ public class Tariff {
     }
 
     public boolean isUnlimitedTraffic() {
-        return isUnlimitedTraffic;
+        return unlimitedTraffic;
     }
 
     public void setUnlimitedTraffic(boolean unlimitedTraffic) {
-        isUnlimitedTraffic = unlimitedTraffic;
+        this.unlimitedTraffic = unlimitedTraffic;
     }
 
     public float getAmount() {

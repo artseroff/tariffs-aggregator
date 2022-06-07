@@ -13,18 +13,22 @@
 <body>
 
 <main>
+    <h2>Вход в систему</h2>
+    <form method="POST" action="login" class="gridCenteredForm">
 
-    <form method="POST" action="login" id="singleForm">
-        <h2>Вход в систему</h2>
-        Логин
-        <br>
-        <input name="login" type="text"
-               autofocus="true" oninput="clearErrorMessages()"/>
-        <p>
-        Пароль<br>
-        <input name="password" type="password" oninput="clearErrorMessages()"/></p>
-        <p id="errorText" class="error" th:text="${errorText}" ></p>
-        <button type="submit">Войти</button>
+        <div>
+            Логин
+            <br>
+            <input name="login" type="text"
+                   autofocus="true" oninput="clearErrorMessages()" maxlength="15"/>
+        </div>
+        <div>
+            Пароль<br>
+            <input name="password" type="password" oninput="clearErrorMessages()" maxlength="15"/>
+        </div>
+        <label id="errorText" class="error" th:text="${errorText}" ></label>
+        <button class="buttonRow" type="submit">Войти</button>
+
     </form>
 </main>
 

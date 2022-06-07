@@ -25,7 +25,7 @@ public class SecurityRedirectFilter implements Filter {
         if (session == null) {
             httpResponse.sendRedirect(String.format("%s%s", httpRequest.getContextPath(), indexPath));
             return;
-            // if user logged out and returned back to page and send command to controller
+            // if user logged out and returned to page and send command to controller
         } else {
             User user = (User) session.getAttribute("user");
             if (user == null) {

@@ -6,11 +6,6 @@ body {
     background-color: #ffefd5;
 }
 
-main {
-    display: grid;
-    justify-items: center;
-}
-
 textarea {
     font-family: Arial;
     font-size: 0.875rem;
@@ -37,28 +32,44 @@ table {
     border-collapse: collapse;
 }
 
-#tariffs {
+.orangeGreyTable {
     outline: 3px solid #ffd300;
     background-color: #fffff0;
     font-size: 1rem;
 }
 
-#tariffs th {
+.orangeGreyTable th {
     background-color: #ffd300;
     color: #fff;
-    font-weight:lighter;
+    font-weight: lighter;
 }
 
-#tariffs th, td{
+.orangeGreyTable th, td{
     padding: 10px 5px;
 }
 
-tbody tr:nth-child(even){
+.orangeGreyTable tbody tr:nth-child(even){
     background-color: #e7e7e7;
+}
+
+.orangeGreyTable th{
+    max-width: 100px;
 }
 
 input {
     font-size: 0.875rem;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: textfield;
 }
 
 button {
@@ -82,7 +93,23 @@ select {
 .gridCenteredForm {
     display: grid;
     justify-items: center;
-    row-gap: 10px;
+    row-gap: 5px;
+}
+
+.buttonRow {
+    margin: 10px 0 0 0;
+}
+
+.doubleFieldForm label {
+    justify-self: start;
+    max-width: fit-content;
+}
+
+.doubleFieldFormRow {
+    display: grid;
+    column-gap: 10px;
+    row-gap: 5px;
+    grid-template-columns: 225px 225px;
 }
 
 .linkButton {
@@ -131,6 +158,6 @@ select {
     justify-items: right;
 }
 
-h3 {
+h3,h2 {
     text-align: center;
 }
