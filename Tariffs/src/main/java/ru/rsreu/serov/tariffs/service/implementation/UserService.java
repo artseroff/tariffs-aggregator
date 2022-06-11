@@ -63,6 +63,6 @@ public class UserService implements EntityService<User> {
         // Либо такого логина нет у других пользователей,
         // либо пользователь с таким логином найден и это
         // и есть редактируемый пользователь
-        return foundUser == null || (foundUser != null && id == foundUser.getId());
+        return foundUser == null || (foundUser.getId().equals(id));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.rsreu.serov.tariffs.entity.Company;
 import ru.rsreu.serov.tariffs.entity.Tariff;
 import ru.rsreu.serov.tariffs.message.MessagePropertiesSource;
 import ru.rsreu.serov.tariffs.service.implementation.CompanyService;
@@ -47,36 +48,6 @@ public class EditorController {
         return "/editor/tariffPage";
     }
 
-    /*@GetMapping("/showEditTariffPageWithErrors")
-    public String showEditTariffPageWithErrors(Model model, @ModelAttribute("tariff") Tariff tariff) {
-        if (model.getAttribute("bindingResultErrors") != null) {
-            BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
-            model.addAttribute(String.format("%s.%s", messagePropertiesSource.getMessage("binding.result.template"), "tariff"), bindingResult);
-        }
-        *//*model.addAttribute("companies", companyService.findAll());*//*
-        return "/editor/addTariffPage";
-    }
-
-
-    @PostMapping("/editTariff")
-    public String saveEditedTariff(@Valid @ModelAttribute("tariff") Tariff tariff, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            redirectAttributes.addFlashAttribute("tariff", tariff);
-            return "redirect:/editor/showEditTariffPageWithErrors";
-        }
-
-        if (tariffService.isNewNameOfTariffWithIdUnique(tariff.getName(), tariff.getId())) {
-            tariffService.update(tariff);
-            return "redirect:/editor/tariffs";
-        } else {
-            redirectAttributes.addFlashAttribute("tariff", tariff);
-            redirectAttributes.addFlashAttribute("errorUniqueNameText", "Тариф с таким именем уже существует");
-            return "redirect:/editor/showEditTariffPageWithErrors";
-        }
-
-    }*/
-
     @PostMapping("/deleteTariff")
     public String deleteTariff(HttpServletRequest request) {
         long id = Long.parseLong(request.getParameter("tariffId"));
@@ -112,10 +83,65 @@ public class EditorController {
             return "redirect:/editor/tariffs";
         } else {
             redirectAttributes.addFlashAttribute("tariff", tariff);
-            redirectAttributes.addFlashAttribute("errorUniqueNameText", "Тариф с таким именем уже существует");
+            redirectAttributes.addFlashAttribute("errorUniqueNameText", "Тариф с таким наименованием уже существует");
             return "redirect:/editor/showTariffPage";
         }
 
     }
 
+    @RequestMapping("/companies")
+    public String showCompaniesPage(Model model) {
+        model.addAttribute("companies", companyService.findAll());
+        return "/editor/companies";
+    }
+
+
+    @RequestMapping("/showEditCompanyPage")
+    public String showEditCompanyPage(HttpServletRequest request, Model model) {
+        long id = Long.parseLong(request.getParameter("companyId"));
+        Company company = companyService.findById(id);
+        model.addAttribute("company", company);
+        return "/editor/companyPage";
+    }
+
+    @PostMapping("/deleteCompany")
+    public String deleteCompany(HttpServletRequest request) {
+        long id = Long.parseLong(request.getParameter("companyId"));
+        companyService.deleteById(id);
+        return "redirect:/editor/companies";
+    }
+
+    @RequestMapping("/showCompanyPage")
+    public String showCompanyPage(Model model, @ModelAttribute("company") Company company) {
+        if (company == null) {
+            model.addAttribute("company", new Company());
+        } else {
+            // Если метод открыт не на добавление или были ошибки биндинга
+            if (model.getAttribute("bindingResultErrors") != null) {
+                BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
+                model.addAttribute(String.format("%s.%s", messagePropertiesSource.getMessage("binding.result.template"), "company"), bindingResult);
+            }
+        }
+
+        return "/editor/companyPage";
+    }
+
+    @PostMapping("/saveCompany")
+    public String saveCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("company", company);
+            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
+            return "redirect:/editor/showCompanyPage";
+        }
+
+        if (companyService.isNewNameOfCompanyWithIdUnique(company.getName(), company.getId())) {
+            companyService.add(company);
+            return "redirect:/editor/companies";
+        } else {
+            redirectAttributes.addFlashAttribute("company", company);
+            redirectAttributes.addFlashAttribute("errorUniqueNameText", "Компания с таким наименованием уже существует");
+            return "redirect:/editor/showCompanyPage";
+        }
+
+    }
 }

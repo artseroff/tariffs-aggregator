@@ -1,6 +1,8 @@
 package ru.rsreu.serov.tariffs.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -10,21 +12,13 @@ public class Company {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "{valid.tariff.name.empty}")
     private String name;
 
     private String info;
 
-    @Transient
-    @OneToOne(mappedBy = "company")
-    private Tariff tariff;
-
-    public void setTariff(Tariff tariff) {
-        this.tariff = tariff;
-    }
-
-    public Tariff getTariff() {
-        return tariff;
-    }
+   /* @OneToMany(cascade=CascadeType.REMOVE, mappedBy = "company")
+    private List<Tariff> tariffList;*/
 
     public Company(Long id, String name, String info) {
         this.id = id;
@@ -35,6 +29,10 @@ public class Company {
     public Company(String name, String info) {
         this.name = name;
         this.info = info;
+    }
+
+    public Company(Long id) {
+        this.id = id;
     }
 
     public Company() {

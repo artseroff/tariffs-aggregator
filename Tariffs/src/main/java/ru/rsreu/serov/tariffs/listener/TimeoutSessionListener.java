@@ -15,11 +15,6 @@ public class TimeoutSessionListener implements HttpSessionListener {
     UserRepository userRepository;
 
     @Override
-    public void sessionCreated(HttpSessionEvent ev) {
-        System.out.println("СОЗДАНА");
-    }
-
-    @Override
     public void sessionDestroyed(HttpSessionEvent event) {
         System.out.println("Сессия закончилась");
         User user = (User) event.getSession().getAttribute("user");

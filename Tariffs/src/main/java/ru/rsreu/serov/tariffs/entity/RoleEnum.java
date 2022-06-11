@@ -3,17 +3,24 @@ package ru.rsreu.serov.tariffs.entity;
 import java.util.Arrays;
 
 public enum RoleEnum {
-    ADMINISTRATOR("Администратор"),
-    EDITOR("Редактор каталога");
+    ADMINISTRATOR("Администратор", "/admin"),
+    EDITOR("Редактор каталога", "/editor");
 
     private final String name;
 
-    RoleEnum(String name) {
+    private final String mainPage;
+
+    RoleEnum(String name, String mainPage) {
         this.name = name;
+        this.mainPage = mainPage;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getMainPage() {
+        return mainPage;
     }
 
     public static RoleEnum findRoleByName(String parameterName) throws IllegalArgumentException {

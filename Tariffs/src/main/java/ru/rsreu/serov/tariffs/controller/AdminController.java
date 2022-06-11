@@ -16,8 +16,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
+
 @Controller
-public class FrontController {
+@RequestMapping("/admin")
+public class AdminController {
 
     private final UserService userService;
 
@@ -25,69 +27,20 @@ public class FrontController {
 
     private final MessagePropertiesSource messagePropertiesSource;
 
-    public FrontController(UserService userService, RoleService roleService, MessagePropertiesSource messagePropertiesSource) {
+    public AdminController(UserService userService, RoleService roleService, MessagePropertiesSource messagePropertiesSource) {
         this.userService = userService;
         this.roleService = roleService;
         this.messagePropertiesSource = messagePropertiesSource;
     }
 
-    @RequestMapping("/")
-    public String initialize() {
-        return "index";
-    }
-
-    @GetMapping("/login")
-    public String showLogin() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestParam(value = "login") String login, @RequestParam(value = "password") String password,
-                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        String page;
-        User foundUser = userService.getByLoginAndPassword(login, password);
-        if (foundUser != null) {
-            //Если не авторизован
-            if (!foundUser.isAuthorized()) {
-
-                //изменить статус на авторизован
-                userService.updateUserAuthorizationStatus(foundUser.getId(), true);
-                foundUser.setAuthorized(true);
-                HttpSession session = request.getSession();
-                session.setAttribute("user", foundUser);
-
-                if (foundUser.getRole().getName().equals(RoleEnum.ADMINISTRATOR.getName())) {
-                    page = "redirect:/admin/users";
-                } else {
-                    page = "redirect:/editor/tariffs";
-                }
-
-            } else {
-                redirectAttributes.addFlashAttribute("errorText", "Вы уже авторизованы!");
-                page = "redirect:/login";
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("errorText", "Неверный логин или пароль!");
-            page = "redirect:/login";
-        }
-
-        return page;
-    }
-
-    @GetMapping("/admin/users")
+    @RequestMapping({"", "/users"})
     public String showUsers(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "/admin/users";
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        request.getSession().invalidate();
-        return "redirect:/";
-    }
-
-    @RequestMapping("/admin/showEditUserPage")
+    @RequestMapping("/showEditUserPage")
     public String showEditUserPage(HttpServletRequest request, Model model) {
         long id = Long.parseLong(request.getParameter("userId"));
         User user = userService.findById(id);
@@ -95,7 +48,7 @@ public class FrontController {
         return "/admin/editUserPage";
     }
 
-    @GetMapping("/admin/userPageWithErrors")
+    @GetMapping("/userPageWithErrors")
     public String showUserPageWithErrors(Model model, @ModelAttribute("user") User user) {
         // если были ошибки биндинга
        /* if (model.getAttribute("bindingResultErrors")!=null) {
@@ -113,7 +66,7 @@ public class FrontController {
     }
 
 
-    @PostMapping("/admin/editUser")
+    @PostMapping("/editUser")
     public String saveEditedUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
@@ -121,18 +74,18 @@ public class FrontController {
             return "redirect:/admin/userPageWithErrors";
         }
 
-            if (userService.isNewLoginOfUserWithIdUnique(user.getLogin(), user.getId())) {
-                userService.update(user);
-                return "redirect:/admin/users";
-            } else {
-                redirectAttributes.addFlashAttribute("user", user);
-                redirectAttributes.addFlashAttribute("errorUniqueLoginText", "Пользователь с таким логином уже существует");
-                return "redirect:/admin/userPageWithErrors";
-            }
+        if (userService.isNewLoginOfUserWithIdUnique(user.getLogin(), user.getId())) {
+            userService.update(user);
+            return "redirect:/admin/users";
+        } else {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errorUniqueLoginText", "Пользователь с таким логином уже существует");
+            return "redirect:/admin/userPageWithErrors";
+        }
 
     }
 
-    @PostMapping("/admin/deleteUser")
+    @PostMapping("/deleteUser")
     public String deleteUser(HttpServletRequest request) {
         long id = Long.parseLong(request.getParameter("userId"));
         userService.deleteById(id);
@@ -140,7 +93,7 @@ public class FrontController {
     }
 
     // Этот метот как для пост, так и гет после редиректа
-    @RequestMapping("/admin/showAddUserPage")
+    @RequestMapping("/showAddUserPage")
     public String showAddUserPage(Model model, @ModelAttribute("user") User user) {
         if (user == null) {
             model.addAttribute("user", new User());
@@ -156,7 +109,7 @@ public class FrontController {
         return "admin/addUserPage";
     }
 
-    @PostMapping("/admin/addUser")
+    @PostMapping("/addUser")
     public String addUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);

@@ -1,5 +1,8 @@
 package ru.rsreu.serov.tariffs.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -41,8 +44,8 @@ public class Tariff {
 
     private String info;
 
-    @OneToOne()
-    @JoinColumn(name = "company_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name="company_id")
     private Company company;
 
 

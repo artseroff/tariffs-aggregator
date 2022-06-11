@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="|Тариф ${tariff.name}|"></title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+
+    <style>
+        gridCenteredForm:first-child {
+            margin-top: 20px;
+        }
+
+        b {
+            font-size: 1.1rem;
+            font-family: 'MS Sans Serif';
+        }
+    </style>
+</head>
+<body>
+<div th:replace="headers/headerMenu :: header">
+</div>
+<main>
+    <div class="companyRow">
+    <form th:action="@{/editor/saveTariff}" th:object="${tariff}" method="post">
+        <b th:text="${tariff.name}"></b>
+        <label class="companyName">(<th:block th:text="${tariff.company.name}"></th:block>)</label><br><br>
+        <th:block th:if="${tariff.amount != 0}">
+        <label>В пакет услуг* включено:</label>
+        <ul>
+            <li><b th:text="${tariff.countFreeMinutes}"></b> минут;</li>
+            <li th:if="${tariff.countFreeMessages != 0}"><b th:text="${tariff.countFreeMessages}"></b> смс;</li>
+            <th:block th:if="${tariff.unlimitedTraffic}">
+                <li><b>Безлимитный</b> интернет.</li>
+            </th:block>
+            <th:block th:unless="${tariff.unlimitedTraffic}">
+                <li><b th:text="${tariff.countGBInternetTraffic}"></b> ГБ интернета.</li>
+            </th:block>
+        </ul>
+        <label>Абонентская плата составляет <b th:text="${tariff.amount} % 1 == 0 ? ${#numbers.formatDecimal(tariff.amount, 0, 0)} : ${tariff.amount}"></b>
+            ₽ в месяц.</label><br><br>
+        <label>Если бесплатный пакет услуг будет израсходован, то услуги связи будут предоставляться по следующим условиям:</label>
+        </th:block>
+        <th:block th:if="${tariff.amount == 0}">
+            <label><b>У тарифа отсутствует</b> абонентская плата. Услуги связи предоставляются по следующим условиям:</label>
+        </th:block>
+        <ul>
+            <li><b th:text="${tariff.costPerMinute}"></b> ₽ за минуту разговора;</li>
+            <li><b th:text="${tariff.costPerMessage}"></b> ₽ за 1 смс.</li>
+        </ul>
+
+        <label th:if="${!tariff.info.empty}">Дополнительная информация.<br><th:block th:text="${tariff.info}"></th:block></label>
+        <p th:if="${tariff.amount != 0 }">*Пакет услуг входит в абонентскую плату</p>
+    </form>
+    </div>
+</main>
+</body>
+</html>

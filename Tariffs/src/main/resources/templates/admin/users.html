@@ -36,9 +36,9 @@
             <td th:text="${elem.role.name}"></td>
             <td th:text="${elem.isAuthorized} ? 'Авторизован' : 'Не авторизован'"></td>
             <td>
-                <form action="showEditUserPage" method="post">
+                <form th:action="@{/admin/showEditUserPage}" method="post">
                     <input type="hidden" name="userId" th:value="${elem.id}"/>
-                    <button type="submit" th:if="${!elem.isAuthorized}"> Редактировать </button>
+                    <input type="submit" th:if="${!elem.isAuthorized}" value="Редактировать">
                 </form>
             </td>
             <td>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог тарифов</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="headers/headerMenu :: header">
+</div>
+<main>
+    <h3>Каталог тарифов</h3>
+    <div class="filterAndContent">
+        <div>
+            <form class="gridCenteredForm leftSideLabelsForm justifyCentered" th:action="@{/user/applyFilter}" th:object="${tariffFilter}" method="post">
+                <label>Фильтрация по пакету услуг, входящих в тарифный план</label>
+                <label><input type="checkbox" th:field="*{enabledCountFreeMessages}" onclick="disableCountGBInput(this.checked)">
+                    По количеству сообщений</label>
+                <fieldset>
+                    от
+                    <input type="text" th:field="*{minCountFreeMessages}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                    до
+                    <input type="text" th:field="*{maxCountFreeMessages}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                </fieldset>
+                <label><input type="checkbox" th:field="*{enabledCountFreeMinutes}">
+                    По количеству минут</label>
+                <fieldset>
+                    от
+                    <input type="text" th:field="*{minCountFreeMinutes}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                    до
+                    <input type="text" th:field="*{maxCountFreeMinutes}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                </fieldset>
+                <label><input type="checkbox" th:field="*{enabledCountGBInternetTraffic}">
+                    По количеству ГБ интернет-трафика</label>
+                <fieldset>
+                    от
+                    <input type="text" th:field="*{minCountGBInternetTraffic}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                    до
+                    <input type="text" th:field="*{maxCountGBInternetTraffic}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                </fieldset>
+                <label><input type="checkbox" th:field="*{enabledAmount}">
+                    По абонентской плате</label>
+                <fieldset>
+                    от
+                    <input type="text" th:field="*{minAmount}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                    до
+                    <input type="text" th:field="*{maxAmount}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g,'');"/>
+                </fieldset>
+                <div class="error" th:text="${wrongRanges}"></div>
+                <div>
+                    <button type="submit">Применить фильтр</button>
+                    <button type="submit" form="deleteFilter">Отменить фильтр</button>
+                </div>
+                <label>*Для применения фильтрации по текущей группе, отметьте ее галкой</label>
+            </form>
+            <form th:action="@{/user/deleteFilter}" th:object="${tariffFilter}" method="post" id="deleteFilter">
+            </form>
+        </div>
+        <div>
+            <div class="tariffRow" th:each="elem, state : ${tariffs}">
+                <th:block th:if="${elem.amount == 0}">
+                    <div>
+                        <b th:text="${elem.name}" ></b>
+                        <label class="companyName">(<th:block th:text="${elem.company.name}"></th:block>)</label>
+                    </div>
+
+                    <div>
+                        <label><b th:text="${elem.costPerMinute}"></b> ₽ за минуту разговора</label>
+                        <label><b th:text="${elem.costPerMessage}"></b> ₽ за 1 смс</label>
+                    </div>
+                    <div>
+                        <label><b>Без</b> абонентской платы</label>
+                        <form action="showTariffPage" method="get">
+                            <input type="hidden" name="tariffId" th:value="${elem.id}"/>
+                            <button type="submit">Подробнее</button>
+                        </form>
+                    </div>
+                </th:block>
+                <th:block th:unless="${elem.amount == 0}">
+                    <div>
+                        <b th:text="${elem.name}" ></b>
+                        <label class="companyName">(<th:block th:text="${elem.company.name}"></th:block>)</label>
+                    </div>
+
+                    <div>
+                        <label>В пакет услуг включено</label>
+                        <label><b th:text="${elem.countFreeMinutes}"></b> мин</label>
+                        <label th:if="${elem.countFreeMessages != 0}"><b th:text="${elem.countFreeMessages}"></b> смс</label>
+                        <th:block th:if="${elem.unlimitedTraffic}">
+                            <label><b>Безлимитный</b> интернет</label>
+                        </th:block>
+                        <th:block th:unless="${elem.unlimitedTraffic}">
+                            <label><b th:text="${elem.countGBInternetTraffic}"></b> ГБ интернета</label>
+                        </th:block>
+                    </div>
+                    <div>
+                        <label><b th:text="${elem.amount} % 1 == 0 ? ${#numbers.formatDecimal(elem.amount, 0, 0)} : ${elem.amount}"></b> ₽<br>в месяц </label>
+                        <form action="showTariffPage" method="get">
+                            <input type="hidden" name="tariffId" th:value="${elem.id}"/>
+                            <button type="submit">Подробнее</button>
+                        </form>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

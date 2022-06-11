@@ -26,8 +26,8 @@ public class User {
     @Size(max=255, message = "{valid.user.name.size}")
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Role role;
 
     private boolean isAuthorized;

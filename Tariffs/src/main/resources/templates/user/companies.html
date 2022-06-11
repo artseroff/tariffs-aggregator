@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог компаний</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+    <style>
+        .companyRow label:first-child {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="headers/headerMenu :: header">
+</div>
+<main>
+    <h3>Каталог компаний</h3>
+    <div class="companyRow" th:each="elem, state : ${companies}">
+        <label th:text="${elem.name}"></label><br><br>
+        <label th:text="${elem.info}"></label>
+    </div>
+</main>
+</body>
+</html>

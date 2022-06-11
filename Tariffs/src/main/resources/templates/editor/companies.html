@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог компаний</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+    <style>
+       .infoTd {
+           max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="headers/headerLogoutAndMenu :: header">
+</div>
+<main>
+    <h3>Каталог компаний</h3>
+    <form th:action="@{/editor/showCompanyPage}" method="post" class="gridCenteredForm">
+        <button type="submit">Добавить компанию</button>
+    </form>
+    <table class="orangeGreyTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Дополнительная информация</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="elem, state : ${companies}">
+                <td th:text="${state.count}"></td>
+                <td th:text="${elem.name}"></td>
+                <td class="infoTd" th:text="${elem.info}"></td>
+            <td>
+                <form action="showEditCompanyPage" method="post">
+                    <input type="hidden" name="companyId" th:value="${elem.id}"/>
+                    <input type="submit" value="Редактировать">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/editor/deleteCompany}" method="post">
+                    <input type="hidden" name="companyId" th:value="${elem.id}"/>
+                    <input type="submit" value="Удалить" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</main>
+</body>
+</html>

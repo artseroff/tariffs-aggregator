@@ -26,8 +26,8 @@
             Пароль<br>
             <input name="password" type="password" oninput="clearErrorMessages()" maxlength="15"/>
         </div>
-        <label id="errorText" class="error" th:text="${errorText}" ></label>
-        <button class="buttonRow" type="submit">Войти</button>
+        <div id="errorText" class="error" th:text="${errorText}" ></div>
+        <button type="submit">Войти</button>
 
     </form>
 </main>

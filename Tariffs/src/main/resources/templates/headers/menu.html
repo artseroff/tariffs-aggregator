@@ -8,12 +8,12 @@
 
 <div class="headerBlock">
     <div th:fragment="menu" class="menuBlock">
-        <form th:action="@{/logout}" method="get">
+        <form th:action="tariffs" method="post">
             <button type="submit" class="linkButton">
                 Тарифы
             </button>
         </form>
-        <form th:action="@{/logout}" method="get">
+        <form th:action="companies" method="post">
             <button type="submit" class="linkButton">
                 Компании
             </button>

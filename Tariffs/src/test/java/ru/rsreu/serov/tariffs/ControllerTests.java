@@ -1,23 +1,19 @@
 package ru.rsreu.serov.tariffs;
 
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.rsreu.serov.tariffs.controller.FrontController;
-import ru.rsreu.serov.tariffs.entity.User;
-import ru.rsreu.serov.tariffs.repository.UserRepository;
+import ru.rsreu.serov.tariffs.controller.UserController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebMvcTest(FrontController.class)
+@WebMvcTest(UserController.class)
 public class ControllerTests {
 
     @InjectMocks
-    private FrontController frontController;
+    private UserController userController;
 
     @Test
     public void editUser() {

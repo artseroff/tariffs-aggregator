@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Страница редактирования компании</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+
+    <style>
+        textarea {
+            width: 450px;
+            min-height: 30px;
+            max-height: 80px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="headers/headerLogout :: header">
+</div>
+<main>
+    <h3>Страница редактирования компании</h3>
+    <div  class="gridCenteredForm leftSideLabelsForm">
+        <form th:action="@{/editor/saveCompany}" th:object="${company}" method="post" class="gridCenteredForm">
+            <input type="hidden" th:field="*{id}"/>
+            <label>Название:
+            <input type="text" th:field="*{name}" maxlength="50"/></label>
+            <div th:errors="*{name}" class="error"></div>
+            <label>Дополнительная информация</label>
+            <textarea th:field="*{info}" maxlength="255"></textarea>
+            <div th:errors="*{info}" class="error"></div>
+            <div class="buttonRow">
+                <button type="submit">Сохранить</button>
+                <button type="submit" form="cancelForm" >Отмена</button>
+            </div>
+
+        </form>
+        <form th:action="@{/editor/companies}" id="cancelForm" method="post">
+        </form>
+    </div>
+
+</main>
+</body>
+</html>
