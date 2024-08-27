@@ -12,7 +12,7 @@
 
 Каталог тарифов:
 
-![image](https://github.com/user-attachments/assets/4988bc19-5c00-4e23-958c-5d195d094d6d)
+![Каталог тарифов](https://github.com/user-attachments/assets/b7ead2e0-4cc2-4721-8b39-2111dcd8cf61)
 
 Пример тарифов из каталога:
 
