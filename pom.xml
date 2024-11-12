@@ -3,7 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.rsreu.serov</groupId>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>ru.rsreu</groupId>
     <artifactId>root</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -24,6 +31,9 @@
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
 
         <postgresql.version>42.7.4</postgresql.version>
+
+        <lombook.version>1.18.34</lombook.version>
+
     </properties>
 
     <modules>
@@ -32,13 +42,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <dependency>
                 <groupId>org.postgresql</groupId>
@@ -50,6 +53,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <optional>true</optional>
+                <version>${lombook.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
