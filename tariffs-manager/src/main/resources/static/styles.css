@@ -1,0 +1,244 @@
+html {
+    font-size: 20px;
+    /*font-family: 'MS Sans Serif';*/
+}
+
+/*input, button {
+    font-family: inherit;
+}*/
+
+body {
+    margin: 0;
+    background-color: #ffefd5;
+}
+
+textarea {
+    font-family: Arial;
+    font-size: 0.875rem;
+}
+
+
+.fullnameTextarea {
+    width: 215px;
+    min-height: 30px;
+    max-height: 80px;
+    resize: vertical;
+}
+
+.error {
+    color:red;
+}
+
+table {
+    text-align: center;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border-collapse: collapse;
+}
+
+.orangeGreyTable {
+    outline: 3px solid #ffd300;
+    background-color: #fffff0;
+    font-size: 1rem;
+}
+
+.orangeGreyTable th {
+    background-color: #ffd300;
+    color: #fff;
+    font-weight: lighter;
+}
+
+.orangeGreyTable th, td{
+    padding: 10px 5px;
+}
+
+.orangeGreyTable tbody tr:nth-child(even){
+    background-color: #e7e7e7;
+}
+
+.orangeGreyTable th{
+    max-width: 100px;
+}
+
+input {
+    font-size: 0.875rem;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: textfield;
+}
+
+button {
+    background-color: #fff7ec;
+    font-size: 0.875rem;
+    border: rgb(128, 128, 128) 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+button:hover {
+    background-color: #f3e1c3;
+}
+
+button:active {
+    background-color: #fff7ec;
+}
+
+select {
+    width: 222px;
+    font-size: 0.875rem;
+}
+
+.singleForm {
+    padding: 20px;
+}
+
+.gridCenteredForm {
+    display: grid;
+    justify-items: center;
+    row-gap: 5px;
+}
+
+.buttonRow {
+    margin: 10px 0 0 0;
+}
+.leftSideLabelsForm label {
+    justify-self: start;
+    max-width: fit-content;
+}
+
+.doubleFieldFormRow {
+    display: grid;
+    column-gap: 10px;
+    row-gap: 5px;
+    grid-template-columns: 225px 225px;
+}
+
+.linkButton {
+    border: #FFFFFF;
+    background: none;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 5px 10px;
+}
+
+
+.linkButton:hover {
+    text-decoration: underline;
+    border-radius: 5px;
+    background-color: #FFAA00;
+}
+
+.linkButton:active {
+    color: black;
+}
+
+.headerBlock {
+    display: grid;
+    background: #FFBF40;
+    padding: 5px 10px;
+    margin: 0;
+    border-radius: 7px;
+    color: #FFFFFF;
+    height: auto;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    justify-items: center;
+    min-height: 50px;
+}
+
+.menuBlock {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 15px;
+}
+
+.logoutBlock {
+    padding: 5px;
+    display: grid;
+    grid-row-gap: 5px;
+    justify-items: right;
+}
+
+h3,h2 {
+    text-align: center;
+}
+
+.tariffRow {
+    display: grid;
+    padding: 27px;
+    margin: 20px auto;
+    width: 600px;
+    min-height: 100px;
+    /* justify-content: center;*/
+    grid-template-columns: 35% 40% 20%;
+    outline: 3px solid #ffd300;
+    background-color: #fffff0;
+    border-radius: 5px;
+    column-gap: 20px;
+}
+.tariffRow b {
+    font-size: 1.2rem;
+    font-family: 'MS Sans Serif';
+}
+.tariffRow div {
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column;
+}
+
+.tariffRow div:nth-child(3) {
+    align-items: center;
+}
+
+.companyName {
+    font-size: 1.1rem;
+    font-style: normal;
+}
+
+.companyRow {
+    margin: 25px auto;
+    outline: 3px solid #ffd300;
+    background-color: #fffff0;
+    border-radius: 5px;
+    width: 500px;
+    padding: 27px;
+}
+
+.filterAndContent .error {
+    max-width: fit-content;
+}
+
+.filterAndContent {
+    display: grid;
+    margin: 30px;
+    grid-template-columns: auto 1fr;
+}
+
+fieldset {
+    border: none;
+}
+
+fieldset input {
+    width: 100px;
+    justify-self: baseline;
+}
+
+.justifyCentered {
+    justify-content: center;
+}
+
+.filterAndContent .tariffRow:first-child {
+    margin-top: 10px;
+}
