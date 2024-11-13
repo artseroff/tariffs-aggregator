@@ -76,7 +76,8 @@ public class HtmlTariffsParser implements TariffsFetcher {
         return uriList;
     }
 
-    private Optional<Tariff> getTariffByUrl(URI url) {
+    @Override
+    public Optional<Tariff> getTariffByUrl(URI url) {
         Optional<Tariff> optionalEmpty = Optional.empty();
 
         Optional<String> optionalBody = megafonClient.getHtmlBodyTariffLink(url);
