@@ -2,7 +2,7 @@ package ru.rsreu.manager.service.implementation;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import ru.rsreu.manager.entity.Tariff;
+import ru.rsreu.manager.domain.Tariff;
 import ru.rsreu.manager.repository.TariffRepository;
 import ru.rsreu.manager.service.EntityService;
 

@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.rsreu.manager.entity.RoleEnum;
-import ru.rsreu.manager.entity.Tariff;
-import ru.rsreu.manager.entity.TariffFilter;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.RoleEnum;
+import ru.rsreu.manager.domain.Tariff;
+import ru.rsreu.manager.domain.TariffFilter;
+import ru.rsreu.manager.domain.User;
 import ru.rsreu.manager.message.MessagePropertiesSource;
 import ru.rsreu.manager.service.implementation.CompanyService;
 import ru.rsreu.manager.service.implementation.TariffService;
@@ -56,8 +56,6 @@ public class UserController {
             model.addAttribute("tariffs", tariffService.findAll());
         }
 
-        // компании
-        /////
         if (tariffFilter == null) {
             model.addAttribute("tariffFilter", new TariffFilter());
         } else {
@@ -68,7 +66,7 @@ public class UserController {
                         messagePropertiesSource.getMessage("binding.result.template"), "tariffFilter"), bindingResult);
             }
         }
-        /////
+
         return "/user/tariffs";
     }
 
@@ -126,6 +124,7 @@ public class UserController {
     public String login(@RequestParam(value = "login") String login, @RequestParam(value = "password") String password,
                         HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String page;
+        // TODO to service
         User foundUser = userService.getByLoginAndPassword(login, password);
         if (foundUser != null) {
             //Если не авторизован
@@ -137,6 +136,7 @@ public class UserController {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", foundUser);
 
+                // TODO Refactor to main page
                 if (foundUser.getRole().getName().equals(RoleEnum.ADMINISTRATOR.getName())) {
                     page = "redirect:/admin/users";
                 } else {

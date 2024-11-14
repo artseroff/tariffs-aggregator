@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.rsreu.manager.entity.Tariff;
+import ru.rsreu.manager.domain.Tariff;
 
 @Repository
 public interface TariffRepository extends JpaRepository<Tariff, Long> {

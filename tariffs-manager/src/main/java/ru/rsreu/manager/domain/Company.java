@@ -1,4 +1,4 @@
-package ru.rsreu.manager.entity;
+package ru.rsreu.manager.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,31 +6,38 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "companies")
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "{valid.tariff.name.empty}")
     private String name;
 
-    public Role() {
+    private String info;
+
+    public Company(Long id, String name, String info) {
+        this.id = id;
+        this.name = name;
+        this.info = info;
     }
 
-    public Role(Long id) {
+    public Company(String name, String info) {
+        this.name = name;
+        this.info = info;
+    }
+
+    public Company(Long id) {
         this.id = id;
     }
 
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Role(String name) {
-        this.name = name;
+    public Company() {
     }
 
     public Long getId() {
@@ -41,7 +48,6 @@ public class Role {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
@@ -50,4 +56,11 @@ public class Role {
         this.name = name;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 }

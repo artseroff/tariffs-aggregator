@@ -1,4 +1,4 @@
-package ru.rsreu.manager.filter;
+package ru.rsreu.manager.controller.servlet.filter;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import org.springframework.core.annotation.Order;
-import ru.rsreu.manager.entity.RoleEnum;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.RoleEnum;
+import ru.rsreu.manager.domain.User;
 
 @Order(1)
 @WebFilter(urlPatterns = {"/admin/*", "/editor/*"})

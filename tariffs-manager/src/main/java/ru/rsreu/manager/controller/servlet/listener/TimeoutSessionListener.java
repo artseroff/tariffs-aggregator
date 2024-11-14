@@ -1,9 +1,9 @@
-package ru.rsreu.manager.listener;
+package ru.rsreu.manager.controller.servlet.listener;
 
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 import org.springframework.stereotype.Component;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.User;
 import ru.rsreu.manager.repository.UserRepository;
 
 @Component

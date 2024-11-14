@@ -1,0 +1,17 @@
+server:
+  port: 8888
+  servlet:
+    session:
+      timeout: 1m
+    context-path: /tariff
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tariffs
+    username: postgres
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

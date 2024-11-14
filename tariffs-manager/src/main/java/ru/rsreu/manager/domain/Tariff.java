@@ -1,4 +1,4 @@
-package ru.rsreu.manager.entity;
+package ru.rsreu.manager.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.User;
 import ru.rsreu.manager.message.MessagePropertiesSource;
 import ru.rsreu.manager.service.implementation.RoleService;
 import ru.rsreu.manager.service.implementation.UserService;

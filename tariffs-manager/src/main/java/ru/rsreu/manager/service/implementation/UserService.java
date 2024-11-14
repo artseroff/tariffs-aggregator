@@ -2,7 +2,7 @@ package ru.rsreu.manager.service.implementation;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.User;
 import ru.rsreu.manager.repository.UserRepository;
 import ru.rsreu.manager.service.EntityService;
 
