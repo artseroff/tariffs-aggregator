@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: megafon
+  kafka:
+    admin:
+      auto-create: false
+    producer:
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+
+megafon:
+  name: Мегафон
+client:
+  megafon:
+    base-url: https://moscow.megafon.ru
+
+scheduler:
+  enable: true
+  interval: P1D
+
+kafka:
+  bootstrap-servers: localhost:29091
+  topic: actual-tariffs

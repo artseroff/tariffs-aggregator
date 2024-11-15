@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.rsreu.manager.entity.User;
+import ru.rsreu.manager.domain.User;
 import ru.rsreu.manager.message.MessagePropertiesSource;
 import ru.rsreu.manager.service.implementation.RoleService;
 import ru.rsreu.manager.service.implementation.UserService;
-
 
 @Controller
 @RequestMapping("/admin")
@@ -27,8 +26,10 @@ public class AdminController {
 
     private final MessagePropertiesSource messagePropertiesSource;
 
-    public AdminController(UserService userService,
-                           RoleService roleService, MessagePropertiesSource messagePropertiesSource) {
+    public AdminController(
+        UserService userService,
+        RoleService roleService, MessagePropertiesSource messagePropertiesSource
+    ) {
         this.userService = userService;
         this.roleService = roleService;
         this.messagePropertiesSource = messagePropertiesSource;
@@ -55,22 +56,24 @@ public class AdminController {
         if (model.getAttribute("bindingResultErrors") != null) {
             BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
             model.addAttribute(String.format("%s.%s",
-                    messagePropertiesSource.getMessage("binding.result.template"), "user"), bindingResult);
+                messagePropertiesSource.getMessage("binding.result.template"), "user"
+            ), bindingResult);
         }
         return "/admin/editUserPage";
     }
 
-
     @PostMapping("/editUser")
-    public String saveEditedUser(@Valid @ModelAttribute("user") User user,
-                                 BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveEditedUser(
+        @Valid @ModelAttribute("user") User user,
+        BindingResult bindingResult, RedirectAttributes redirectAttributes
+    ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/admin/userPageWithErrors";
         }
 
-        if (userService.isNewLoginOfUserWithIdUnique(user.getLogin(), user.getId())) {
+        if (userService.isUnique(user)) {
             userService.update(user);
             return "redirect:/admin/users";
         } else {
@@ -97,9 +100,10 @@ public class AdminController {
             // Если метод открыт не в первый раз и были ошибки биндинга
             if (model.getAttribute("bindingResultErrors") != null) {
                 BindingResult bindingResult = (BindingResult) model
-                        .getAttribute("bindingResultErrors");
+                    .getAttribute("bindingResultErrors");
                 model.addAttribute(String.format("%s.%s",
-                        messagePropertiesSource.getMessage("binding.result.template"), "user"), bindingResult);
+                    messagePropertiesSource.getMessage("binding.result.template"), "user"
+                ), bindingResult);
             }
 
         }
@@ -108,15 +112,17 @@ public class AdminController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@Valid @ModelAttribute("user") User user,
-                          BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addUser(
+        @Valid @ModelAttribute("user") User user,
+        BindingResult bindingResult, RedirectAttributes redirectAttributes
+    ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
             return "redirect:/admin/showAddUserPage";
         }
 
-        if (userService.isNewLoginOfUserWithIdUnique(user.getLogin(), user.getId())) {
+        if (userService.isUnique(user)) {
             userService.add(user);
             return "redirect:/admin/users";
         } else {

@@ -25,6 +25,7 @@
                 <th>Цена за минуту разговора (руб.)</th>
                 <th>Цена за смс (руб.)</th>
                 <th>Абонентская плата (руб.)</th>
+                <th>Создан автоматически</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -42,6 +43,7 @@
                 <td th:text="${elem.costPerMinute}"></td>
                 <td th:text="${elem.costPerMessage}"></td>
                 <td>-</td>
+                <td th:text="${elem.addedNotByUser} ? 'Да' : 'Нет'"></td>
             </th:block>
             <th:block th:unless="${elem.amount == 0}">
                 <td th:text="${state.count}"></td>
@@ -53,6 +55,7 @@
                 <td th:text="${elem.costPerMinute}"></td>
                 <td th:text="${elem.costPerMessage}"></td>
                 <td th:text="${elem.amount}"></td>
+                <td th:text="${elem.addedNotByUser} ? 'Да' : 'Нет'"></td>
             </th:block>
             <td>
                 <form action="showEditTariffPage" method="post">

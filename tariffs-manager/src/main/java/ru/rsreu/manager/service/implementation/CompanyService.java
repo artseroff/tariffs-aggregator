@@ -2,11 +2,13 @@ package ru.rsreu.manager.service.implementation;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import ru.rsreu.manager.entity.Company;
-import ru.rsreu.manager.repository.CompanyRepository;
+import org.springframework.transaction.annotation.Transactional;
+import ru.rsreu.manager.domain.Company;
+import ru.rsreu.manager.domain.repository.CompanyRepository;
 import ru.rsreu.manager.service.EntityService;
 
 @Service
+@Transactional
 public class CompanyService implements EntityService<Company> {
 
     private final CompanyRepository companyRepository;
@@ -44,11 +46,11 @@ public class CompanyService implements EntityService<Company> {
         return companyRepository.getByName(name);
     }
 
-    public boolean isNewNameOfCompanyWithIdUnique(String name, Long id) {
-        Company foundCompany = companyRepository.getByName(name);
+    public boolean isUnique(Company company) {
+        Company foundCompany = companyRepository.getByName(company.getName());
         // Либо такого имени нет у других компаний,
         // либо компания с таким именем найдена и это
         // и есть редактируемая компания
-        return foundCompany == null || (foundCompany.getId().equals(id));
+        return foundCompany == null || (foundCompany.getId().equals(company.getId()));
     }
 }

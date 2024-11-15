@@ -84,7 +84,6 @@
             <div class="doubleFieldFormRow">
                 <label>Цена за минуту разговора (руб.)</label>
                 <label>Цена за смс (руб.)</label>
-                <!--oninput="this.value = this.value.replace('-','');-->
                 <input type="number" step="0.001" th:field="*{costPerMinute}" maxlength="10"/>
                 <input type="number" step="0.001" th:field="*{costPerMessage}" maxlength="10"/>
                 <div th:errors="*{costPerMinute}" class="error"></div>
@@ -93,7 +92,15 @@
             </div>
 
             <label>Абонентская плата:
-            <input type="number" step="0.001" th:field="*{amount}" maxlength="10"/></label>
+                <input type="number" step="0.001" th:field="*{amount}" maxlength="10"/>
+            </label>
+            <label>Ссылка:
+                <input type="text" th:field="*{url}" size="35"/>
+            </label>
+            <label style="color: rgb(128,128,128)">Тариф создан
+            <th:block th:text="${tariff.addedNotByUser} ? 'автоматически' : 'пользователем'"></th:block></label>
+            <input type="hidden" th:field="*{addedNotByUser}"/>
+
             <div th:errors="*{amount}" class="error"></div>
             <label>Дополнительная информация</label>
             <textarea th:field="*{info}" maxlength="255"></textarea>
