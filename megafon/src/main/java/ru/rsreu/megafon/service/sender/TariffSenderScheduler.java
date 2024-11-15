@@ -33,6 +33,9 @@ public class TariffSenderScheduler {
     public void update() {
 
         List<Tariff> tariffs = tariffsFetcher.getActualTariffs();
+        if (tariffs.isEmpty()) {
+            return;
+        }
         TariffsData message = new TariffsData(companyName, tariffs);
         senderService.send(message);
         log.info("Отправлено {} актуальных тарифов", tariffs.size());

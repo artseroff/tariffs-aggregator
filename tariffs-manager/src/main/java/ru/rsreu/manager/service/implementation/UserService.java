@@ -3,10 +3,8 @@ package ru.rsreu.manager.service.implementation;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import ru.rsreu.manager.domain.User;
-import ru.rsreu.manager.repository.UserRepository;
+import ru.rsreu.manager.domain.repository.UserRepository;
 import ru.rsreu.manager.service.EntityService;
-
-
 
 @Service
 public class UserService implements EntityService<User> {
@@ -59,11 +57,11 @@ public class UserService implements EntityService<User> {
         }
     }
 
-    public boolean isNewLoginOfUserWithIdUnique(String login, Long id) {
-        User foundUser = getByLogin(login);
+    public boolean isUnique(User user) {
+        User foundUser = getByLogin(user.getLogin());
         // Либо такого логина нет у других пользователей,
         // либо пользователь с таким логином найден и это
         // и есть редактируемый пользователь
-        return foundUser == null || (foundUser.getId().equals(id));
+        return foundUser == null || (foundUser.getId().equals(user.getId()));
     }
 }

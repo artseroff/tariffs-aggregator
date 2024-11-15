@@ -1,11 +1,9 @@
-package ru.rsreu.megafon.dto;
+package ru.rsreu.manager.dto;
 
-import java.net.URI;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
+import java.net.URI;
 
-@Builder
-public record Tariff(
+public record TariffDto(
     @NotNull String name,
     int countFreeMessages,
     int countFreeMinutes,

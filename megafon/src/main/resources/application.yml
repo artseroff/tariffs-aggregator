@@ -4,6 +4,13 @@ spring:
   kafka:
     admin:
       auto-create: false
+    producer:
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
 
 megafon:
   name: Мегафон

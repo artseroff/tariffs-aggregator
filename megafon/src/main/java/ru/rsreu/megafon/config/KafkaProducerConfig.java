@@ -5,6 +5,7 @@ import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.config.TopicBuilder;
@@ -19,14 +20,21 @@ import ru.rsreu.megafon.service.sender.kafka.MegafonQueueProducer;
 
 @Validated
 @ConfigurationProperties(prefix = "kafka", ignoreUnknownFields = false)
-public record KafkaProducerConfig(String bootstrapServers, String topic) {
+public record KafkaProducerConfig(@NotNull String bootstrapServers, @NotNull String topic) {
     @Bean
     public KafkaTemplate<String, TariffsData> tariffsDataKafkaTemplate() {
-        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(Map.of(
+
+        Map<String, Object> props = Map.of(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
-        )));
+        );
+        JsonSerializer<TariffsData> jsonSerializer = new JsonSerializer<>();
+        jsonSerializer.setAddTypeInfo(false);
+
+        DefaultKafkaProducerFactory<String, TariffsData> producerFactory =
+            new DefaultKafkaProducerFactory<>(props, new StringSerializer(), jsonSerializer);
+        return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
@@ -37,7 +45,7 @@ public record KafkaProducerConfig(String bootstrapServers, String topic) {
     }
 
     @Bean
-    public NewTopic scrapperTopic() {
+    public NewTopic tariffsTopic() {
         return TopicBuilder.name(topic)
             .partitions(1)
             .replicas(1)

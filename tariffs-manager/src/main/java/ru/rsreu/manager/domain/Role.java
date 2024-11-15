@@ -20,19 +20,6 @@ public class Role {
     public Role() {
     }
 
-    public Role(Long id) {
-        this.id = id;
-    }
-
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Role(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
@@ -40,7 +27,6 @@ public class Role {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;

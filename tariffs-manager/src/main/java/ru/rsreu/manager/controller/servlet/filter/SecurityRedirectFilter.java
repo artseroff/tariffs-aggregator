@@ -17,10 +17,14 @@ import ru.rsreu.manager.domain.User;
 @Order(1)
 @WebFilter(urlPatterns = {"/admin/*", "/editor/*"})
 public class SecurityRedirectFilter implements Filter {
+    private static final String COMBINE_FORMAT = "%s%s";
+
     @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(
+        ServletRequest servletRequest,
+        ServletResponse servletResponse,
+        FilterChain filterChain
+    ) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         HttpSession session = httpRequest.getSession(false);
@@ -28,20 +32,20 @@ public class SecurityRedirectFilter implements Filter {
         String indexPath = "/";
         // if session ended, when user was on page and send command to controller
         if (session == null) {
-            httpResponse.sendRedirect(String.format("%s%s", httpRequest.getContextPath(), indexPath));
+            httpResponse.sendRedirect(String.format(COMBINE_FORMAT, httpRequest.getContextPath(), indexPath));
             return;
             // if user logged out and returned to page and send command to controller
         } else {
             User user = (User) session.getAttribute("user");
             if (user == null) {
-                httpResponse.sendRedirect(String.format("%s%s", httpRequest.getContextPath(), indexPath));
+                httpResponse.sendRedirect(String.format(COMBINE_FORMAT, httpRequest.getContextPath(), indexPath));
                 return;
             } else {
                 RoleEnum role = RoleEnum.findRoleByName(user.getRole().getName());
                 String mainPage = role.getMainPage();
                 //if requested page not allowed to this users role, redirect him to his role main page
                 if (!httpRequest.getRequestURI().contains(mainPage)) {
-                    httpResponse.sendRedirect(String.format("%s%s", httpRequest.getContextPath(), mainPage));
+                    httpResponse.sendRedirect(String.format(COMBINE_FORMAT, httpRequest.getContextPath(), mainPage));
                     return;
                 }
 

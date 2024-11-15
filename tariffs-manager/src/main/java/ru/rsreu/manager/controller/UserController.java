@@ -35,10 +35,12 @@ public class UserController {
 
     private final MessagePropertiesSource messagePropertiesSource;
 
-    public UserController(UserService userService,
-                          TariffService tariffService,
-                          CompanyService companyService,
-                          MessagePropertiesSource messagePropertiesSource) {
+    public UserController(
+        UserService userService,
+        TariffService tariffService,
+        CompanyService companyService,
+        MessagePropertiesSource messagePropertiesSource
+    ) {
         this.userService = userService;
         this.tariffService = tariffService;
         this.companyService = companyService;
@@ -51,7 +53,11 @@ public class UserController {
     }
 
     @RequestMapping({"user", "/user/tariffs"})
-    public String showTariffsPage(@ModelAttribute("tariffFilter") TariffFilter tariffFilter, @ModelAttribute("tariffs") ArrayList<Tariff> tariffs, Model model) {
+    public String showTariffsPage(
+        @ModelAttribute("tariffFilter") TariffFilter tariffFilter,
+        @ModelAttribute("tariffs") ArrayList<Tariff> tariffs,
+        Model model
+    ) {
         if (tariffs.isEmpty() && (!tariffFilter.isCurrent())) {
             model.addAttribute("tariffs", tariffService.findAll());
         }
@@ -63,7 +69,8 @@ public class UserController {
             if (model.getAttribute("bindingResultErrors") != null) {
                 BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
                 model.addAttribute(String.format("%s.%s",
-                        messagePropertiesSource.getMessage("binding.result.template"), "tariffFilter"), bindingResult);
+                    messagePropertiesSource.getMessage("binding.result.template"), "tariffFilter"
+                ), bindingResult);
             }
         }
 
@@ -71,7 +78,11 @@ public class UserController {
     }
 
     @PostMapping("/user/applyFilter")
-    public String applyFilter(@Valid @ModelAttribute("tariffFilter") TariffFilter tariffFilter, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String applyFilter(
+        @Valid @ModelAttribute("tariffFilter") TariffFilter tariffFilter,
+        BindingResult bindingResult,
+        RedirectAttributes redirectAttributes
+    ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("tariffFilter", tariffFilter);
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
@@ -80,22 +91,25 @@ public class UserController {
         if (!tariffFilter.validRanges()) {
             redirectAttributes.addFlashAttribute("tariffFilter", tariffFilter);
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            redirectAttributes.addFlashAttribute("wrongRanges", "Максимальная граница диапазона фильтрации должна быть больше минимальной!");
+            redirectAttributes.addFlashAttribute(
+                "wrongRanges",
+                "Максимальная граница диапазона фильтрации должна быть больше минимальной!"
+            );
             return "redirect:/user/tariffs";
         }
         List<Tariff> tariffList = tariffService.findAll();
-        tariffList = (tariffList.stream().filter((tariff) -> {
-            return tariffFilter.applyFilter(tariff);
-        }).collect(Collectors.toList()));
+        tariffList = (tariffList.stream().filter(tariffFilter::applyFilter).collect(Collectors.toList()));
         tariffFilter.setCurrent(true);
         redirectAttributes.addFlashAttribute("tariffs", tariffList);
         redirectAttributes.addFlashAttribute("tariffFilter", tariffFilter);
         return "redirect:/user/tariffs";
     }
 
-
     @PostMapping("/user/deleteFilter")
-    public String deleteFilter(@ModelAttribute("tariffFilter") TariffFilter tariffFilter, RedirectAttributes redirectAttributes) {
+    public String deleteFilter(
+        @ModelAttribute("tariffFilter") TariffFilter tariffFilter,
+        RedirectAttributes redirectAttributes
+    ) {
         tariffFilter.setCurrent(false);
         redirectAttributes.addFlashAttribute("tariffFilter", tariffFilter);
         return "redirect:/user/tariffs";
@@ -121,8 +135,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam(value = "login") String login, @RequestParam(value = "password") String password,
-                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String login(
+        @RequestParam(value = "login") String login, @RequestParam(value = "password") String password,
+        HttpServletRequest request, RedirectAttributes redirectAttributes
+    ) {
         String page;
         // TODO to service
         User foundUser = userService.getByLoginAndPassword(login, password);
@@ -160,6 +176,5 @@ public class UserController {
         request.getSession().invalidate();
         return "redirect:/";
     }
-
 
 }

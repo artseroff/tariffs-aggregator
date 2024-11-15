@@ -50,8 +50,9 @@
             <li><b th:text="${tariff.costPerMessage}"></b> ₽ за 1 смс.</li>
         </ul>
 
-        <label th:if="${!tariff.info.empty}">Дополнительная информация.<br><th:block th:text="${tariff.info}"></th:block></label>
+        <label th:if="${tariff.info != null && !tariff.info.empty}">Дополнительная информация:<br><th:block th:text="${tariff.info}"></th:block></label>
         <p th:if="${tariff.amount != 0 }">*Пакет услуг входит в абонентскую плату</p>
+        <a th:href="*{url}">Подключить</a>
     </form>
     </div>
 </main>

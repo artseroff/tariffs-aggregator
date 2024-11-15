@@ -15,3 +15,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  kafka:
+    admin:
+      auto-create: false
+
+kafka:
+  enable: true
+  bootstrap-servers: localhost:29091
+  tariffs-topic: actual-tariffs
+  consumer-group: message-group
+  dlq-topic: tariffs-manager.tariffs-topic_dlq

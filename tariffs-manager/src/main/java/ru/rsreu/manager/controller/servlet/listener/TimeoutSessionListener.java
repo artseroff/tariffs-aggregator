@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 import org.springframework.stereotype.Component;
 import ru.rsreu.manager.domain.User;
-import ru.rsreu.manager.repository.UserRepository;
+import ru.rsreu.manager.domain.repository.UserRepository;
 
 @Component
 public class TimeoutSessionListener implements HttpSessionListener {

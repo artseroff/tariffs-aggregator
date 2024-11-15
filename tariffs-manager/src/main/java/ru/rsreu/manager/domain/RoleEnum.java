@@ -24,7 +24,9 @@ public enum RoleEnum {
     }
 
     public static RoleEnum findRoleByName(String parameterName) throws IllegalArgumentException {
-        return Arrays.stream(RoleEnum.values()).filter(v -> v.getName().equals(parameterName)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown user"));
+        return Arrays.stream(RoleEnum.values())
+            .filter(v -> v.getName().equals(parameterName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Unknown user"));
     }
 }
