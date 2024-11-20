@@ -14,6 +14,9 @@ import ru.rsreu.manager.service.implementation.UserService;
 
 @Controller
 public class AuthorizationController {
+    public static final String REDIRECT = "redirect:/";
+    public static final String REDIRECT_LOGIN = "redirect:/login";
+    public static final String ERROR_TEXT_ATTR = "errorText";
     private final UserService userService;
 
     public AuthorizationController(UserService userService) {
@@ -34,12 +37,12 @@ public class AuthorizationController {
         try {
             foundUser = userService.authorizeUserWithLoginAndPassword(login, password);
         } catch (AlreadyAuthorizedUserException e) {
-            redirectAttributes.addFlashAttribute("errorText", "Вы уже авторизованы!");
-            return "redirect:/login";
+            redirectAttributes.addFlashAttribute(ERROR_TEXT_ATTR, "Вы уже авторизованы!");
+            return REDIRECT_LOGIN;
         }
         if (foundUser == null) {
-            redirectAttributes.addFlashAttribute("errorText", "Неверный логин или пароль!");
-            return "redirect:/login";
+            redirectAttributes.addFlashAttribute(ERROR_TEXT_ATTR, "Неверный логин или пароль!");
+            return REDIRECT_LOGIN;
         }
 
         HttpSession session = request.getSession();
@@ -48,12 +51,12 @@ public class AuthorizationController {
         RoleEnum roleEnum = RoleEnum.findRoleByName(foundUser.getRole().getName());
         session.setAttribute("roleEnum", roleEnum);
 
-        return "redirect:" + roleEnum.getMainPage();
+        return REDIRECT + roleEnum.getMainPage();
     }
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "redirect:/";
+        return REDIRECT;
     }
 }

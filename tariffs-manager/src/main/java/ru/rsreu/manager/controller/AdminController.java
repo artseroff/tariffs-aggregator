@@ -1,5 +1,6 @@
 package ru.rsreu.manager.controller;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -20,11 +21,15 @@ import ru.rsreu.manager.service.implementation.UserService;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private static final String USER_ID_PARAM = "userId";
+    public static final String USER_ATTR = "user";
+    public static final String EDIT_USER_PAGE_PATH = "/admin/editUserPage";
+    public static final String BINDING_RESULT_ERRORS_ATTR = "bindingResultErrors";
+    public static final String REDIRECT_ADMIN = "redirect:/admin";
     private final UserService userService;
-
     private final RoleService roleService;
-
     private final MessagePropertiesSource messagePropertiesSource;
+    private String bindingResultErrorsUserAttr;
 
     public AdminController(
         UserService userService,
@@ -33,6 +38,13 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
         this.messagePropertiesSource = messagePropertiesSource;
+    }
+
+    @PostConstruct
+    public void initBindingResultErrorsUserAttr() {
+        bindingResultErrorsUserAttr = String.format("%s.%s",
+            messagePropertiesSource.getMessage("binding.result.template"), USER_ATTR
+        );
     }
 
     @RequestMapping({"", "/users"})
@@ -44,27 +56,25 @@ public class AdminController {
 
     @RequestMapping("/showEditUserPage")
     public String showEditUserPage(HttpServletRequest request, Model model) {
-        long id = Long.parseLong(request.getParameter("userId"));
+        long id = Long.parseLong(request.getParameter(USER_ID_PARAM));
         User user = userService.findById(id);
-        model.addAttribute("user", user);
-        return "/admin/editUserPage";
+        model.addAttribute(USER_ATTR, user);
+        return EDIT_USER_PAGE_PATH;
     }
 
     @GetMapping("/userPageWithErrors")
-    public String showUserPageWithErrors(Model model, @ModelAttribute("user") User user) {
+    public String showUserPageWithErrors(Model model, @ModelAttribute(USER_ATTR) User user) {
         // если были ошибки биндинга
-        if (model.getAttribute("bindingResultErrors") != null) {
-            BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
-            model.addAttribute(String.format("%s.%s",
-                messagePropertiesSource.getMessage("binding.result.template"), "user"
-            ), bindingResult);
+        if (model.getAttribute(BINDING_RESULT_ERRORS_ATTR) != null) {
+            BindingResult bindingResult = (BindingResult) model.getAttribute(BINDING_RESULT_ERRORS_ATTR);
+            model.addAttribute(bindingResultErrorsUserAttr, bindingResult);
         }
-        return "/admin/editUserPage";
+        return EDIT_USER_PAGE_PATH;
     }
 
     @PostMapping("/editUser")
     public String saveEditedUser(
-        @Valid @ModelAttribute("user") User user,
+        @Valid @ModelAttribute("USER_ATTR") User user,
         BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
         String errorView = "redirect:/admin/userPageWithErrors";
@@ -76,15 +86,15 @@ public class AdminController {
         BindingResult bindingResult, RedirectAttributes redirectAttributes, String errorPage
     ) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_ERRORS_ATTR, bindingResult);
+            redirectAttributes.addFlashAttribute(USER_ATTR, user);
             return errorPage;
         }
 
         if (userService.processUpdateTransactional(user)) {
-            return "redirect:/admin";
+            return REDIRECT_ADMIN;
         } else {
-            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute(USER_ATTR, user);
             redirectAttributes.addFlashAttribute("errorUniqueLoginText", "Пользователь с таким логином уже существует");
             return errorPage;
         }
@@ -92,24 +102,22 @@ public class AdminController {
 
     @PostMapping("/deleteUser")
     public String deleteUser(HttpServletRequest request) {
-        long id = Long.parseLong(request.getParameter("userId"));
+        long id = Long.parseLong(request.getParameter(USER_ID_PARAM));
         userService.deleteById(id);
-        return "redirect:/admin/users";
+        return REDIRECT_ADMIN;
     }
 
     // Этот метот как для пост, так и гет после редиректа
     @RequestMapping("/showAddUserPage")
-    public String showAddUserPage(Model model, @ModelAttribute("user") User user) {
+    public String showAddUserPage(Model model, @ModelAttribute(USER_ATTR) User user) {
         if (user == null) {
-            model.addAttribute("user", new User());
+            model.addAttribute(USER_ATTR, new User());
         } else {
             // Если метод открыт не в первый раз и были ошибки биндинга
-            if (model.getAttribute("bindingResultErrors") != null) {
+            if (model.getAttribute(BINDING_RESULT_ERRORS_ATTR) != null) {
                 BindingResult bindingResult = (BindingResult) model
-                    .getAttribute("bindingResultErrors");
-                model.addAttribute(String.format("%s.%s",
-                    messagePropertiesSource.getMessage("binding.result.template"), "user"
-                ), bindingResult);
+                    .getAttribute(BINDING_RESULT_ERRORS_ATTR);
+                model.addAttribute(bindingResultErrorsUserAttr, bindingResult);
             }
 
         }
@@ -119,7 +127,7 @@ public class AdminController {
 
     @PostMapping("/addUser")
     public String addUser(
-        @Valid @ModelAttribute("user") User user,
+        @Valid @ModelAttribute(USER_ATTR) User user,
         BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
         String errorView = "redirect:/admin/showAddUserPage";

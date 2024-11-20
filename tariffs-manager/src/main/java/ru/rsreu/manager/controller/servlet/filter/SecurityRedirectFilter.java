@@ -17,8 +17,7 @@ import ru.rsreu.manager.domain.User;
 @Order(1)
 @WebFilter(urlPatterns = {"/admin/*", "/editor/*"})
 public class SecurityRedirectFilter implements Filter {
-    private static final String INDEX_PATH = "/";
-    private static final String COMBINE_FORMAT = "%s%s";
+    private static final String COMBINE_FORMAT = "%s/%s";
 
     @Override
     public void doFilter(
@@ -32,13 +31,13 @@ public class SecurityRedirectFilter implements Filter {
 
         // if session ended, when user was on page and send command to controller
         if (session == null) {
-            httpResponse.sendRedirect(String.format(COMBINE_FORMAT, httpRequest.getContextPath(), INDEX_PATH));
+            httpResponse.sendRedirect(httpRequest.getContextPath());
             return;
         }
         // if user logged out and returned to page and send command to controller
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            httpResponse.sendRedirect(String.format(COMBINE_FORMAT, httpRequest.getContextPath(), INDEX_PATH));
+            httpResponse.sendRedirect(httpRequest.getContextPath());
         } else {
             RoleEnum role = (RoleEnum) session.getAttribute("roleEnum");
             String mainPage = role.getMainPage();

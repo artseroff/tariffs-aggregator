@@ -3,8 +3,8 @@ package ru.rsreu.manager.domain;
 import java.util.Arrays;
 
 public enum RoleEnum {
-    ADMINISTRATOR("Администратор", "/admin"),
-    EDITOR("Редактор каталога", "/editor");
+    ADMINISTRATOR("Администратор", "admin"),
+    EDITOR("Редактор каталога", "editor");
 
     private final String name;
 

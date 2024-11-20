@@ -18,6 +18,12 @@ import ru.rsreu.manager.service.implementation.CompanyService;
 @RequestMapping("/editor")
 public class CompanyController {
 
+    public static final String COMPANY_ID_PARAM = "companyId";
+    public static final String COMPANY_ATTR = "company";
+    public static final String EDITOR_COMPANY_PAGE = "/editor/companyPage";
+    public static final String REDIRECT_EDITOR_COMPANIES = "redirect:/editor/companies";
+    public static final String REDIRECT_EDITOR_SHOW_COMPANY_PAGE = "redirect:/editor/showCompanyPage";
+    public static final String BINDING_RESULT_ERRORS_ATTR = "bindingResultErrors";
     private final CompanyService companyService;
 
     private final MessagePropertiesSource messagePropertiesSource;
@@ -38,65 +44,64 @@ public class CompanyController {
 
     @RequestMapping("/showEditCompanyPage")
     public String showEditCompanyPage(HttpServletRequest request, Model model) {
-        long id = Long.parseLong(request.getParameter("companyId"));
+        long id = Long.parseLong(request.getParameter(COMPANY_ID_PARAM));
         Company company = companyService.findById(id);
-        model.addAttribute("company", company);
-        return "/editor/companyPage";
+        model.addAttribute(COMPANY_ATTR, company);
+        return EDITOR_COMPANY_PAGE;
     }
 
     @PostMapping("/deleteCompany")
     public String deleteCompany(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        long id = Long.parseLong(request.getParameter("companyId"));
+        long id = Long.parseLong(request.getParameter(COMPANY_ID_PARAM));
         try {
             companyService.deleteById(id);
         } catch (EntityHasOrphansException e) {
-            redirectAttributes.addFlashAttribute("companyId", id);
+            redirectAttributes.addFlashAttribute(COMPANY_ID_PARAM, id);
             redirectAttributes.addFlashAttribute(
                 "errorHasOrphansNameText",
                 e.getMessage()
             );
-            return "redirect:/editor/companies";
         }
-        return "redirect:/editor/companies";
+        return REDIRECT_EDITOR_COMPANIES;
     }
 
     @RequestMapping("/showCompanyPage")
-    public String showCompanyPage(Model model, @ModelAttribute("company") Company company) {
+    public String showCompanyPage(Model model, @ModelAttribute(COMPANY_ATTR) Company company) {
         if (company == null) {
-            model.addAttribute("company", new Company());
+            model.addAttribute(COMPANY_ATTR, new Company());
         } else {
             // Если метод открыт не на добавление или были ошибки биндинга
-            if (model.getAttribute("bindingResultErrors") != null) {
-                BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
+            if (model.getAttribute(BINDING_RESULT_ERRORS_ATTR) != null) {
+                BindingResult bindingResult = (BindingResult) model.getAttribute(BINDING_RESULT_ERRORS_ATTR);
                 model.addAttribute(String.format("%s.%s",
-                    messagePropertiesSource.getMessage("binding.result.template"), "company"
+                    messagePropertiesSource.getMessage("binding.result.template"), COMPANY_ATTR
                 ), bindingResult);
             }
         }
 
-        return "/editor/companyPage";
+        return EDITOR_COMPANY_PAGE;
     }
 
     @PostMapping("/saveCompany")
     public String saveCompany(
-        @Valid @ModelAttribute("company") Company company,
+        @Valid @ModelAttribute(COMPANY_ATTR) Company company,
         BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("company", company);
-            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            return "redirect:/editor/showCompanyPage";
+            redirectAttributes.addFlashAttribute(COMPANY_ATTR, company);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_ERRORS_ATTR, bindingResult);
+            return REDIRECT_EDITOR_SHOW_COMPANY_PAGE;
         }
 
         if (companyService.processUpdateTransactional(company)) {
-            return "redirect:/editor/companies";
+            return REDIRECT_EDITOR_COMPANIES;
         } else {
-            redirectAttributes.addFlashAttribute("company", company);
+            redirectAttributes.addFlashAttribute(COMPANY_ATTR, company);
             redirectAttributes.addFlashAttribute(
                 "errorUniqueNameText",
                 "Компания с таким наименованием уже существует"
             );
-            return "redirect:/editor/showCompanyPage";
+            return REDIRECT_EDITOR_SHOW_COMPANY_PAGE;
         }
 
     }
