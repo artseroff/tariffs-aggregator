@@ -6,13 +6,13 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="headers/headerMenu :: header">
+<div th:replace="~{headers/headerMenu :: header}">
 </div>
 <main>
     <h3>Каталог тарифов</h3>
     <div class="filterAndContent">
         <div>
-            <form class="gridCenteredForm leftSideLabelsForm justifyCentered" th:action="@{/user/applyFilter}" th:object="${tariffFilter}" method="post">
+            <form class="gridCenteredForm leftSideLabelsForm justifyCentered" th:action="@{/user/applyFilter}" th:object="${tariffFilter}" method="get">
                 <label>Фильтрация по пакету услуг, входящих в тарифный план</label>
                 <label><input type="checkbox" th:field="*{enabledCountFreeMessages}" onclick="disableCountGBInput(this.checked)">
                     По количеству сообщений</label>
@@ -53,7 +53,7 @@
                 </div>
                 <label>*Для применения фильтрации по текущей группе, отметьте ее галкой</label>
             </form>
-            <form th:action="@{/user/deleteFilter}" th:object="${tariffFilter}" method="post" id="deleteFilter">
+            <form th:action="@{/user/deleteFilter}" th:object="${tariffFilter}" method="get" id="deleteFilter">
             </form>
         </div>
         <div>

@@ -7,7 +7,7 @@
 <body>
 
 <div th:fragment="header" class="headerBlock">
-    <div th:replace="headers/menu :: menu">
+    <div th:replace="~{headers/menu :: menu}">
     </div>
     <div></div>
     <form action="../login" method="get">

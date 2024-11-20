@@ -6,7 +6,7 @@
     <link th:href="@{/styles.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="headers/headerLogoutAndMenu :: header">
+<div th:replace="~{headers/headerLogoutAndMenu :: header}">
 </div>
 <main>
     <h3>Каталог тарифов</h3>
@@ -58,7 +58,7 @@
                 <td th:text="${elem.addedNotByUser} ? 'Да' : 'Нет'"></td>
             </th:block>
             <td>
-                <form action="showEditTariffPage" method="post">
+                <form th:action="@{/editor/showEditTariffPage}" method="get">
                     <input type="hidden" name="tariffId" th:value="${elem.id}"/>
                     <input type="submit" value="Редактировать">
                 </form>

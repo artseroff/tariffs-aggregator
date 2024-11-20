@@ -15,7 +15,7 @@
     </script>
 </head>
 <body>
-<div th:replace="headers/headerLogout :: header">
+<div th:replace="~{headers/headerLogout :: header}">
 </div>
 <main>
     <h3>Добавление пользователя</h3>
@@ -55,7 +55,7 @@
         </div>
 
     </form>
-    <form th:action="@{/admin/users}" id="cancelForm" method="post">
+    <form th:action="@{/admin/users}" id="cancelForm" method="get">
     </form>
 </main>
 </body>

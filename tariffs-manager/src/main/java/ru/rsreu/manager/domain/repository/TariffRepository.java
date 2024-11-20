@@ -9,12 +9,11 @@ import ru.rsreu.manager.domain.Tariff;
 
 @Repository
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
-    Tariff findById(long id);
-
     @EntityGraph(
         type = EntityGraph.EntityGraphType.FETCH,
         attributePaths = "company"
     )
+    @Override
     List<Tariff> findAll();
 
     List<Tariff> findAllByCompanyAndAddedNotByUser(Company company, boolean addedNotByUser);
@@ -24,4 +23,6 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
         Long companyId,
         boolean addedNotByUser
     );
+
+    List<Tariff> findAllByCompanyId(long id);
 }

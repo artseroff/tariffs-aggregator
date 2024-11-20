@@ -7,10 +7,10 @@
 <body>
 
 <div th:fragment="header" class="headerBlock">
-    <div th:replace="headers/menu :: menu">
+    <div th:replace="~{headers/menu :: menu}">
     </div>
     <div></div>
-    <div th:replace="headers/headerLogout :: logout">
+    <div th:replace="~{headers/headerLogout :: logout}">
     </div>
 </div>
 

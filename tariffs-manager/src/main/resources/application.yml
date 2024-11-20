@@ -4,7 +4,9 @@ server:
     session:
       timeout: 1m
     context-path: /tariff
-
+  error:
+    include-message: always
+    include-exception: true
 
 spring:
   datasource:
