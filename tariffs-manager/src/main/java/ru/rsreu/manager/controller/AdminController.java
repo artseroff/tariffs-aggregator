@@ -47,14 +47,14 @@ public class AdminController {
         );
     }
 
-    @RequestMapping({"", "/users"})
+    @GetMapping({"", "/users"})
     public String showUsers(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "/admin/users";
     }
 
-    @RequestMapping("/showEditUserPage")
+    @GetMapping("/showEditUserPage")
     public String showEditUserPage(HttpServletRequest request, Model model) {
         long id = Long.parseLong(request.getParameter(USER_ID_PARAM));
         User user = userService.findById(id);
@@ -107,8 +107,7 @@ public class AdminController {
         return REDIRECT_ADMIN;
     }
 
-    // Этот метот как для пост, так и гет после редиректа
-    @RequestMapping("/showAddUserPage")
+    @GetMapping("/showAddUserPage")
     public String showAddUserPage(Model model, @ModelAttribute(USER_ATTR) User user) {
         if (user == null) {
             model.addAttribute(USER_ATTR, new User());

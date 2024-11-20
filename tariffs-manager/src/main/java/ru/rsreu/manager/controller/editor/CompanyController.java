@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +37,13 @@ public class CompanyController {
         this.messagePropertiesSource = messagePropertiesSource;
     }
 
-    @RequestMapping("/companies")
+    @GetMapping("/companies")
     public String showCompaniesPage(Model model) {
         model.addAttribute("companies", companyService.findAll());
         return "/editor/companies";
     }
 
-    @RequestMapping("/showEditCompanyPage")
+    @GetMapping("/showEditCompanyPage")
     public String showEditCompanyPage(HttpServletRequest request, Model model) {
         long id = Long.parseLong(request.getParameter(COMPANY_ID_PARAM));
         Company company = companyService.findById(id);
@@ -65,7 +66,7 @@ public class CompanyController {
         return REDIRECT_EDITOR_COMPANIES;
     }
 
-    @RequestMapping("/showCompanyPage")
+    @GetMapping("/showCompanyPage")
     public String showCompanyPage(Model model, @ModelAttribute(COMPANY_ATTR) Company company) {
         if (company == null) {
             model.addAttribute(COMPANY_ATTR, new Company());

@@ -10,7 +10,7 @@
 </div>
 <main>
     <h3>Список пользователей</h3>
-    <form th:action="@{/admin/showAddUserPage}" method="post" class="gridCenteredForm">
+    <form th:action="@{/admin/showAddUserPage}" method="get" class="gridCenteredForm">
         <button type="submit">Добавить пользователя</button>
     </form>
     <table class="orangeGreyTable">
@@ -36,7 +36,7 @@
             <td th:text="${elem.role.name}"></td>
             <td th:text="${elem.isAuthorized} ? 'Авторизован' : 'Не авторизован'"></td>
             <td>
-                <form th:action="@{/admin/showEditUserPage}" method="post">
+                <form th:action="@{/admin/showEditUserPage}" method="get">
                     <input type="hidden" name="userId" th:value="${elem.id}"/>
                     <input type="submit" th:if="${!elem.isAuthorized}" value="Редактировать">
                 </form>

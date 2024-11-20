@@ -49,7 +49,7 @@ public class TariffsController {
         );
     }
 
-    @RequestMapping({"", "/tariffs"})
+    @GetMapping({"", "/tariffs"})
     public String showTariffsPage(Model model) {
         model.addAttribute("tariffs", tariffService.findAll());
         return "/editor/tariffs";
@@ -71,7 +71,7 @@ public class TariffsController {
         return REDIRECT_EDITOR;
     }
 
-    @RequestMapping("/showTariffPage")
+    @GetMapping("/showTariffPage")
     public String showTariffPage(Model model, @ModelAttribute(TARIFF_ATTR) Tariff tariff) {
         if (tariff == null) {
             model.addAttribute(TARIFF_ATTR, new Tariff());
