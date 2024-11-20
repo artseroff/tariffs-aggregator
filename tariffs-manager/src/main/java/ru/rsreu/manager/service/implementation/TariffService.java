@@ -19,9 +19,11 @@ import ru.rsreu.manager.service.exception.EntityNotFoundException;
 public class TariffService implements EntityService<Tariff> {
 
     private final TariffRepository tariffRepository;
+    private final CompanyService companyService;
 
-    public TariffService(TariffRepository tariffRepository) {
+    public TariffService(TariffRepository tariffRepository, CompanyService companyService) {
         this.tariffRepository = tariffRepository;
+        this.companyService = companyService;
     }
 
     @Override
@@ -64,31 +66,34 @@ public class TariffService implements EntityService<Tariff> {
         return processUpdate(tariff);
     }
 
-    public void updateScrappedTariffs(List<Tariff> newTariffs) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void updateScrappedTariffs(List<Tariff> newTariffs, String companyName) {
+        Company company = companyService.findByNameIgnoreCase(companyName.toLowerCase());
+        if (company == null) {
+            company = saveCompanyWithName(companyName);
+        }
+
         if (newTariffs.isEmpty()) {
             return;
         }
 
-        Company company = newTariffs.get(0).getCompany();
         List<Tariff> savedTariffs = tariffRepository.findAllByCompanyAndAddedNotByUser(company, true);
 
         Map<String, Tariff> mapNameSavedTariff = new HashMap<>();
         for (Tariff tariff : savedTariffs) {
             mapNameSavedTariff.put(tariff.getName(), tariff);
         }
-        removeNotUpdatedTariffOrSetIdInList(newTariffs, mapNameSavedTariff);
+        removeNotUpdatedTariffOrSetSavedIdAndCompanyInList(newTariffs, mapNameSavedTariff, company);
 
         tariffRepository.saveAll(newTariffs);
 
     }
 
-    private static void removeNotUpdatedTariffOrSetIdInList(
+    private static void removeNotUpdatedTariffOrSetSavedIdAndCompanyInList(
         List<Tariff> newTariffs,
-        Map<String, Tariff> mapNameTariff
+        Map<String, Tariff> mapNameTariff,
+        Company company
     ) {
-        if (mapNameTariff.isEmpty()) {
-            return;
-        }
         Iterator<Tariff> newTariffsIterator = newTariffs.iterator();
         Tariff newTariff;
         while (newTariffsIterator.hasNext()) {
@@ -102,7 +107,14 @@ public class TariffService implements EntityService<Tariff> {
                     newTariff.setId(savedTariff.getId());
                 }
             }
+            newTariff.setCompany(company);
         }
+    }
+
+    private Company saveCompanyWithName(String companyName) {
+        Company newCompany = new Company();
+        newCompany.setName(companyName);
+        return companyService.update(newCompany);
     }
 }
 

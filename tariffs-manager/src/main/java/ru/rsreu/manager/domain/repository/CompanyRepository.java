@@ -7,4 +7,6 @@ import ru.rsreu.manager.domain.Company;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Company getByName(String name);
+
+    Company findByNameIgnoreCase(String name);
 }

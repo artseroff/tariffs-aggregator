@@ -23,7 +23,7 @@ spring:
       auto-create: false
 
 kafka:
-  enable: false
+  enable: true
   bootstrap-servers: localhost:29091
   tariffs-topic: actual-tariffs
   consumer-group: message-group

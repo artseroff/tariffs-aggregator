@@ -62,7 +62,7 @@ public class CompanyService implements EntityService<Company> {
         return foundCompany == null || (foundCompany.getId().equals(company.getId()));
     }
 
-    public Company getByName(String name) {
-        return companyRepository.getByName(name);
+    public Company findByNameIgnoreCase(String name) {
+        return companyRepository.findByNameIgnoreCase(name);
     }
 }

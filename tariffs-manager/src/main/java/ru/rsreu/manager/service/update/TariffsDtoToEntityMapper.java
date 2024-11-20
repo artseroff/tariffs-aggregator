@@ -1,6 +1,5 @@
 package ru.rsreu.manager.service.update;
 
-import ru.rsreu.manager.domain.Company;
 import ru.rsreu.manager.domain.Tariff;
 import ru.rsreu.manager.dto.TariffDto;
 
@@ -8,7 +7,7 @@ public final class TariffsDtoToEntityMapper {
     private TariffsDtoToEntityMapper() {
     }
 
-    public static Tariff mapToTariffEntity(TariffDto tariffDto, Company company) {
+    public static Tariff mapToTariffEntity(TariffDto tariffDto) {
         return Tariff.builder()
             .name(tariffDto.name())
             .countFreeMessages(tariffDto.countFreeMessages())
@@ -18,7 +17,6 @@ public final class TariffsDtoToEntityMapper {
             .costPerMinute(tariffDto.costPerMinute())
             .amount(tariffDto.amount())
             .url(tariffDto.url())
-            .company(company)
             .build();
 
     }
