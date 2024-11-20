@@ -11,5 +11,14 @@ public interface EntityService<E> {
 
     E update(E e);
 
-    E add(E e);
+    boolean isUnique(E entity);
+
+    default boolean processUpdate(E entity) {
+        boolean unique = isUnique(entity);
+        if (!unique) {
+            return false;
+        }
+        update(entity);
+        return true;
+    }
 }

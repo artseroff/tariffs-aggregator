@@ -4,7 +4,9 @@ server:
     session:
       timeout: 1m
     context-path: /tariff
-
+  error:
+    include-message: always
+    include-exception: true
 
 spring:
   datasource:
@@ -21,7 +23,7 @@ spring:
       auto-create: false
 
 kafka:
-  enable: true
+  enable: false
   bootstrap-servers: localhost:29091
   tariffs-topic: actual-tariffs
   consumer-group: message-group

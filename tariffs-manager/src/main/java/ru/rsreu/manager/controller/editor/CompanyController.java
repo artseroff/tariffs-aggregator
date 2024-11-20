@@ -1,4 +1,4 @@
-package ru.rsreu.manager.controller;
+package ru.rsreu.manager.controller.editor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -10,93 +10,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.rsreu.manager.domain.Company;
-import ru.rsreu.manager.domain.Tariff;
 import ru.rsreu.manager.message.MessagePropertiesSource;
+import ru.rsreu.manager.service.exception.EntityHasOrphansException;
 import ru.rsreu.manager.service.implementation.CompanyService;
-import ru.rsreu.manager.service.implementation.TariffService;
 
 @Controller
 @RequestMapping("/editor")
-public class EditorController {
-
-    private final TariffService tariffService;
+public class CompanyController {
 
     private final CompanyService companyService;
 
     private final MessagePropertiesSource messagePropertiesSource;
 
-    public EditorController(
-        TariffService tariffService,
+    public CompanyController(
         CompanyService companyService,
         MessagePropertiesSource messagePropertiesSource
     ) {
-        this.tariffService = tariffService;
         this.companyService = companyService;
         this.messagePropertiesSource = messagePropertiesSource;
-    }
-
-    @RequestMapping({"", "/tariffs"})
-    public String showTariffsPage(Model model) {
-        model.addAttribute("tariffs", tariffService.findAll());
-        return "/editor/tariffs";
-    }
-
-    @RequestMapping("/showEditTariffPage")
-    public String showEditTariffPage(HttpServletRequest request, Model model) {
-        long id = Long.parseLong(request.getParameter("tariffId"));
-        Tariff tariff = tariffService.findById(id);
-        model.addAttribute("tariff", tariff);
-        model.addAttribute("companies", companyService.findAll());
-        return "/editor/tariffPage";
-    }
-
-    @PostMapping("/deleteTariff")
-    public String deleteTariff(HttpServletRequest request) {
-        long id = Long.parseLong(request.getParameter("tariffId"));
-        tariffService.deleteById(id);
-        return "redirect:/editor/tariffs";
-    }
-
-    @RequestMapping("/showTariffPage")
-    public String showTariffPage(Model model, @ModelAttribute("tariff") Tariff tariff) {
-        if (tariff == null) {
-            model.addAttribute("tariff", new Tariff());
-        } else {
-            // Если метод открыт не на добавление или были ошибки биндинга
-            if (model.getAttribute("bindingResultErrors") != null) {
-                BindingResult bindingResult = (BindingResult) model.getAttribute("bindingResultErrors");
-                model.addAttribute(String.format("%s.%s",
-                    messagePropertiesSource.getMessage("binding.result.template"), "tariff"
-                ), bindingResult);
-            }
-        }
-        model.addAttribute("companies", companyService.findAll());
-        return "/editor/tariffPage";
-    }
-
-    @PostMapping("/saveTariff")
-    public String saveTariff(
-        @Valid @ModelAttribute("tariff") Tariff tariff,
-        BindingResult bindingResult, RedirectAttributes redirectAttributes
-    ) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("tariff", tariff);
-            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            return "redirect:/editor/showTariffPage";
-        }
-
-        if (tariffService.isUnique(tariff)) {
-            tariffService.add(tariff);
-            return "redirect:/editor/tariffs";
-        } else {
-            redirectAttributes.addFlashAttribute("tariff", tariff);
-            redirectAttributes.addFlashAttribute(
-                "errorUniqueNameText",
-                "Тариф с таким наименованием, компанией и способом создания уже существует"
-            );
-            return "redirect:/editor/showTariffPage";
-        }
-
     }
 
     @RequestMapping("/companies")
@@ -114,9 +45,18 @@ public class EditorController {
     }
 
     @PostMapping("/deleteCompany")
-    public String deleteCompany(HttpServletRequest request) {
+    public String deleteCompany(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         long id = Long.parseLong(request.getParameter("companyId"));
-        companyService.deleteById(id);
+        try {
+            companyService.deleteById(id);
+        } catch (EntityHasOrphansException e) {
+            redirectAttributes.addFlashAttribute("companyId", id);
+            redirectAttributes.addFlashAttribute(
+                "errorHasOrphansNameText",
+                e.getMessage()
+            );
+            return "redirect:/editor/companies";
+        }
         return "redirect:/editor/companies";
     }
 
@@ -148,8 +88,7 @@ public class EditorController {
             return "redirect:/editor/showCompanyPage";
         }
 
-        if (companyService.isUnique(company)) {
-            companyService.add(company);
+        if (companyService.processUpdateTransactional(company)) {
             return "redirect:/editor/companies";
         } else {
             redirectAttributes.addFlashAttribute("company", company);

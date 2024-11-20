@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rsreu.manager.domain.Company;
 import ru.rsreu.manager.domain.Tariff;
 import ru.rsreu.manager.domain.repository.TariffRepository;
 import ru.rsreu.manager.service.EntityService;
+import ru.rsreu.manager.service.exception.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -23,7 +26,9 @@ public class TariffService implements EntityService<Tariff> {
 
     @Override
     public Tariff findById(long id) {
-        return tariffRepository.findById(id);
+        Optional<Tariff> optionalTariff = tariffRepository.findById(id);
+        return optionalTariff.orElseThrow(() ->
+            new EntityNotFoundException("Тариф с id=%d не найден".formatted(id)));
     }
 
     @Override
@@ -42,12 +47,9 @@ public class TariffService implements EntityService<Tariff> {
     }
 
     @Override
-    public Tariff add(Tariff tariff) {
-        return tariffRepository.save(tariff);
-    }
-
     public boolean isUnique(Tariff tariff) {
-        Tariff foundTariff = tariffRepository.findByNameAndCompanyIdAndAddedNotByUser(tariff.getName(),
+        Tariff foundTariff = tariffRepository.findByNameAndCompanyIdAndAddedNotByUser(
+            tariff.getName(),
             tariff.getCompany().getId(),
             tariff.isAddedNotByUser()
         );
@@ -55,6 +57,11 @@ public class TariffService implements EntityService<Tariff> {
         // либо тариф с таким именем найден и это
         // и есть редактируемый тариф
         return foundTariff == null || (foundTariff.getId().equals(tariff.getId()));
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public boolean processUpdateTransactional(Tariff tariff) {
+        return processUpdate(tariff);
     }
 
     public void updateScrappedTariffs(List<Tariff> newTariffs) {

@@ -67,21 +67,27 @@ public class AdminController {
         @Valid @ModelAttribute("user") User user,
         BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
+        String errorView = "redirect:/admin/userPageWithErrors";
+        return saveUser(user, bindingResult, redirectAttributes, errorView);
+    }
+
+    private String saveUser(
+        User user,
+        BindingResult bindingResult, RedirectAttributes redirectAttributes, String errorPage
+    ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
             redirectAttributes.addFlashAttribute("user", user);
-            return "redirect:/admin/userPageWithErrors";
+            return errorPage;
         }
 
-        if (userService.isUnique(user)) {
-            userService.update(user);
-            return "redirect:/admin/users";
+        if (userService.processUpdateTransactional(user)) {
+            return "redirect:/admin";
         } else {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("errorUniqueLoginText", "Пользователь с таким логином уже существует");
-            return "redirect:/admin/userPageWithErrors";
+            return errorPage;
         }
-
     }
 
     @PostMapping("/deleteUser")
@@ -116,20 +122,8 @@ public class AdminController {
         @Valid @ModelAttribute("user") User user,
         BindingResult bindingResult, RedirectAttributes redirectAttributes
     ) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", user);
-            redirectAttributes.addFlashAttribute("bindingResultErrors", bindingResult);
-            return "redirect:/admin/showAddUserPage";
-        }
-
-        if (userService.isUnique(user)) {
-            userService.add(user);
-            return "redirect:/admin/users";
-        } else {
-            redirectAttributes.addFlashAttribute("user", user);
-            redirectAttributes.addFlashAttribute("errorUniqueLoginText", "Пользователь с таким логином уже существует");
-            return "redirect:/admin/showAddUserPage";
-        }
+        String errorView = "redirect:/admin/showAddUserPage";
+        return saveUser(user, bindingResult, redirectAttributes, errorView);
 
     }
 

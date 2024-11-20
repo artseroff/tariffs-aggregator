@@ -27,6 +27,6 @@ public enum RoleEnum {
         return Arrays.stream(RoleEnum.values())
             .filter(v -> v.getName().equals(parameterName))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Unknown user"));
+            .orElseThrow(() -> new IllegalArgumentException("Unknown role"));
     }
 }

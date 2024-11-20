@@ -20,6 +20,7 @@
     <h3>Каталог компаний</h3>
     <form th:action="@{/editor/showCompanyPage}" method="post" class="gridCenteredForm">
         <button type="submit">Добавить компанию</button>
+        <div class="error" th:text="${errorHasOrphansNameText}"></div>
     </form>
     <table class="orangeGreyTable">
         <thead>
@@ -38,7 +39,7 @@
                 <td th:text="${elem.name}"></td>
                 <td class="infoTd" th:text="${elem.info}"></td>
             <td>
-                <form action="showEditCompanyPage" method="post">
+                <form th:action="@{/editor/showEditCompanyPage}" method="post">
                     <input type="hidden" name="companyId" th:value="${elem.id}"/>
                     <input type="submit" value="Редактировать">
                 </form>

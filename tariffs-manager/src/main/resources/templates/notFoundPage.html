@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Страница не найдена</title>
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body>
+
+<main>
+    <form class="gridCenteredForm">
+        <div>
+            <h2>Страница не найдена</h2>
+            <div>
+                <br>
+                <label>Причина:</label>
+                <br>
+                <label th:text="${errorText}"></label>
+            </div>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>
